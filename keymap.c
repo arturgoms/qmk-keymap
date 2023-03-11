@@ -83,15 +83,16 @@ enum custom_keycodes {
 
 // Home row mods for Dvorak layer.
 #define HOME_A LT(SYM, KC_A)
+#define HOME_R LALT_T(KC_R)
+#define HOME_S LSFT_T(KC_S)
+#define HOME_T LCTL_T(KC_T)
+#define HOME_Z LGUI_T(KC_Z)
+
+#define HOME_N RCTL_T(KC_N)
+#define HOME_E RSFT_T(KC_E)
+#define HOME_I LALT_T(KC_I)
 #define HOME_O LALT_T(KC_O)
-#define HOME_E LSFT_T(KC_E)
-#define HOME_U LCTL_T(KC_U)
-#define HOME_H RCTL_T(KC_H)
-#define HOME_T RSFT_T(KC_T)
-#define HOME_N LALT_T(KC_N)
-#define HOME_S LT(SYM, KC_S)
-#define HOME_SC LGUI_T(KC_SCLN)
-#define HOME_Z RGUI_T(KC_Z)
+#define HOME_SLSH LT(SYM, KC_SLSH)
 
 // Home row mods for QWERTY layer.
 #define QHOME_A LT(SYM, KC_A)
@@ -110,85 +111,24 @@ enum custom_keycodes {
 
 // clang-format off
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
-  [BASE] = LAYOUT_LR(  // Base layer: Dvorak with home row mods.
-    KC_GRV , KC_7   , KC_8   , KC_9   , KC_0   , KC_5   ,
-    KC_TAB , KC_QUOT, KC_COMM, KC_DOT , KC_P   , KC_Y   ,
-    KC_ESC , HOME_A , HOME_O , HOME_E , HOME_U , KC_I   ,
-    KC_LSFT, HOME_SC, KC_Q   , KC_J   , KC_K   , KC_X   ,
-    KC_LCTL, KC_PGUP, KC_PGDN, KC_DOWN, KC_UP  ,
-                                                          MO(SYM), KC_UNDS,
-                                                                   KC_WH_D,
-                                                 KC_DEL , KC_SPC , KC_BTN1,
-
-                      KC_6   , KC_1   , KC_2   , KC_3   , KC_4   , KC_BSLS,
-                      KC_F   , KC_G   , KC_C   , KC_R   , KC_L   , KC_SLSH,
-                      KC_D   , HOME_H , HOME_T , HOME_N , HOME_S , KC_BSPC,
-                      KC_B   , KC_M   , KC_W   , KC_V   , HOME_Z , KC_RSFT,
-                               KC_LEFT, KC_RGHT, DASH   , ARROW  , THMBUP ,
-    KC_MINS, ALTREP ,
-    KC_BSLS,
-    SELWORD, REPEAT , KC_ENT
+  [BASE] = LAYOUT_ortho_5x15(  // Base layer: Colemak with home row mods.
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , QK_BOOT, EXIT    , _______    , KC_6   , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B   , DF(BASE), RGB_VAI, DF(QWERTY) , KC_J   , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
+    KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G   , KC_MRWD, KC_MPLY , KC_MFFD    , KC_M   , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
+    KC_LSFT, HOME_Z , KC_X   , KC_C   , KC_D   , KC_V   , KC_LBRC, KC_UP   , KC_RBRC    , KC_K   , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , KC_RSFT,
+    // KC_LCTL, XXXXXXX, KC_LALT, KC_LGUI,
+    //                         LT(_TMUX, KC_ESC),LT(_RAISE, KC_BSPC), KC_DOWN ,KC_LSFT,
+    //                                                          LT(_LOWER, KC_SPC) , LT(_MAINTENANCE, KC_ENT), KC_BSLS, SELWORD, REPEAT    , KC_RCTL
+    MO(SYM), KC_UNDS, KC_WH_D, KC_DEL , KC_SPC , KC_BTN1, KC_LEFT, KC_DOWN, KC_RGHT , KC_MINS, ALTREP , KC_BSLS, SELWORD, REPEAT    , KC_RCTL
   ),
 
-  [QWERTY] = LAYOUT_LR(  // Alternative base layer: QWERTY.
-    _______, _______, _______, _______, _______, _______,
-    _______, KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,
-    _______, QHOME_A, QHOME_S, QHOME_D, QHOME_F, KC_G   ,
-    _______, QHOME_Z, KC_X   , KC_C   , KC_V   , KC_B   ,
-    _______, _______, _______, _______, _______,
-                                                          _______, _______,
-                                                                   _______,
-                                                 _______, _______, _______,
-
-                      _______, _______, _______, _______, _______, _______,
-                      KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_MINS,
-                      KC_H   , QHOME_J, QHOME_K, QHOME_L, QHOME_SC, _______,
-                      KC_N   , KC_M   , KC_COMM, KC_DOT , QHOME_SL, _______,
-                               _______, _______, _______, _______, _______,
-    KC_QUOT, _______,
-    _______,
-    _______, _______, _______
-  ),
-
-  [SYM] = LAYOUT_LR(  // Symbol layer.
-    _______, KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F5  ,
-    USRNAME, KC_QUOT, KC_LABK, KC_RABK, KC_DQUO, KC_DOT ,
-    TMUXESC, KC_EXLM, KC_MINS, KC_PLUS, KC_EQL , KC_HASH,
-    _______, KC_CIRC, KC_SLSH, KC_ASTR, KC_BSLS, UPDIR,
-    _______, _______, _______, C(KC_END), C(KC_HOME),
-                                                          _______, _______,
-                                                                   _______,
-                                                 SRCHSEL, _______, _______,
-
-                      KC_F6  , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F11 ,
-                      KC_AMPR, SCOPE  , KC_LBRC, KC_RBRC, KC_PERC, KC_F12 ,
-                      KC_PIPE, KC_COLN, KC_LPRN, KC_RPRN, KC_QUES, TO(ADJUST),
-                      KC_TILD, KC_DLR , KC_LCBR, KC_RCBR, KC_AT  , _______,
-                               KC_HOME, KC_END , _______, _______, _______,
-    _______, _______,
-    _______,
-    _______, _______, _______
-  ),
-
-  [ADJUST] = LAYOUT_LR(  // Adjust layer.
-    QK_BOOT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    EXIT   , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                                                          XXXXXXX, XXXXXXX,
-                                                                   _______,
-                                                 XXXXXXX, XXXXXXX, _______,
-
-                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
-                      XXXXXXX, KC_BRID, KC_BRIU, REDSHFT, XXXXXXX, XXXXXXX ,
-                      XXXXXXX, DF(BASE), DF(QWERTY), XXXXXXX, XXXXXXX, EXIT  ,
-                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    XXXXXXX, XXXXXXX,
-    XXXXXXX,
-    XXXXXXX, XXXXXXX, XXXXXXX
-  ),
+  [QWERTY] = LAYOUT_ortho_5x15(  // Alternative base layer: QWERTY.
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______,_______, _______   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  DF(BASE),_______,DF(QWERTY), KC_Y   , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
+    KC_ESC , QHOME_A, QHOME_S, QHOME_D, QHOME_F, KC_G   ,  _______,_______, _______   , KC_H   , QHOME_J, QHOME_K, QHOME_L, QHOME_SC, KC_ENT,
+    KC_LSFT, QHOME_Z, KC_X   , KC_C   , KC_V   , KC_B   ,  _______,_______, _______   , KC_N   , KC_M   , KC_COMM, KC_DOT , QHOME_SL, KC_RSFT,
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RCTL
+  )
 };
 // clang-format on
 
@@ -217,14 +157,13 @@ bool get_tapping_force_hold(uint16_t keycode, keyrecord_t* record) {
   // instead want to "force hold" and disable key repeating.
   switch (keycode) {
     // Repeating is useful for Vim navigation keys.
-    case HOME_U:
-    case HOME_H:
+    case HOME_T:
+    case HOME_N:
     case QHOME_J:
     case QHOME_K:
     case QHOME_L:
     // Repeating Z is useful for spamming undo.
     case HOME_Z:
-    case QHOME_Z:
       return false;  // Enable key repeating.
     default:
       return true;  // Otherwise, force hold and disable key repeating.
@@ -258,13 +197,13 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
   // are on the same hand in Dvorak.
   switch (tap_hold_keycode) {
     case HOME_A:  // A + U.
-      if (other_keycode == HOME_U) {
+      if (other_keycode == HOME_T) {
         return true;
       }
       break;
 
-    case HOME_S:  // S + H and S + G.
-      if (other_keycode == HOME_H || other_keycode == KC_G) {
+    case HOME_O:  // S + H and S + G.
+      if (other_keycode == HOME_N || other_keycode == KC_L) {
         return true;
       }
       break;
@@ -282,7 +221,6 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   switch (tap_hold_keycode) {
-    case HOME_SC:
     case HOME_Z:
       return 0;  // Bypass Achordion for these keys.
   }
