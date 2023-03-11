@@ -49,25 +49,69 @@
 #include "layout.h"
 
 enum layers {
-  BASE,
-  QWERTY,
-  SYM,
-  ADJUST,
+    BASE,
+    QWERTY,
+    SYM,
+    LOWER,
+    RAISE,
+    MAINTENCE,
+    TMUX,
 };
 
 enum custom_keycodes {
-  UPDIR = SAFE_RANGE,
-  EXIT,
-  SCOPE,
-  SELWORD,
-  TMUXESC,
-  SRCHSEL,
-  USRNAME,
-  DASH,
-  ARROW,
-  THMBUP,
-  REPEAT,
-  ALTREP,
+    UPDIR = SAFE_RANGE,
+    EXIT,
+    SCOPE,
+    SELWORD,
+    TMUXESC,
+    SRCHSEL,
+    USRNAME,
+    DASH,
+    ARROW,
+    THMBUP,
+    REPEAT,
+    ALTREP,
+    MC_COMMENT,
+    MC_CPR,
+    MC_SAVE,
+    MC_DELETE_WORD,
+    MC_QUIT,
+    MC_VISTA,
+    MC_NEXT_TAB,
+    MC_PREV_TAB,
+    MC_BUFFERS,
+    MC_MAXIMIZER,
+    MC_HARPOON_1,
+    MC_HARPOON_2,
+    MC_HARPOON_3,
+    MC_HARPOON_4,
+    MC_HARPOON_5,
+    MC_HARPOON_6,
+    MC_HARPOON_7,
+    MC_HARPOON_8,
+    MC_HARPOON_9,
+    MC_HARPOON_0,
+    MC_TMUX_PREV,
+    MC_TMUX_NEXT,
+    MC_TMUX_SPLIT_H,
+    MC_TMUX_SPLIT_V,
+    MC_TMUX_RELOAD,
+    MC_TMUX_RENAME,
+    MC_TMUX_SWITCH_UP,
+    MC_TMUX_SWITCH_DOWN,
+    MC_TMUX_SWITCH_LEFT,
+    MC_TMUX_SWITCH_RIGHT,
+    MC_TMUX_KILL_SESSION,
+    MC_TMUX_KILL_PANE,
+    MC_TMUX_NEW,
+    MC_TMUX_INSTALL,
+    MC_TMUX_DETACH,
+    MC_TMUX_SAVE,
+    MC_TMUX_RESTORE,
+    MC_NEXT_BUFFER,
+    MC_PREV_BUFFER,
+    MC_TMUX_CHSH,
+    MC_TMUX_SESSIONIZER
 };
 
 // This keymap uses home row mods. In addition to mods, I have home row
@@ -91,8 +135,8 @@ enum custom_keycodes {
 #define HOME_N RCTL_T(KC_N)
 #define HOME_E RSFT_T(KC_E)
 #define HOME_I LALT_T(KC_I)
-#define HOME_O LALT_T(KC_O)
-#define HOME_SLSH LT(SYM, KC_SLSH)
+#define HOME_O LT(SYM, KC_O)
+#define HOME_SLSH RGUI_T(KC_SLSH)
 
 // Home row mods for QWERTY layer.
 #define QHOME_A LT(SYM, KC_A)
@@ -106,28 +150,67 @@ enum custom_keycodes {
 #define QHOME_Z LGUI_T(KC_Z)
 #define QHOME_SL RGUI_T(KC_SLSH)
 
-// I have F13 bound to toggle Redshift (http://jonls.dk/redshift/).
-#define REDSHFT KC_F13
+#define LR_TMUX  LT(TMUX, LCTL(KC_B))  // This ESC is useless
+#define LR_RAISE LT(RAISE, KC_BSPC)
+#define LR_LOWER LT(LOWER, KC_SPC)
+#define LR_MAIN  LT(MAINTENCE, KC_ENT)
 
 // clang-format off
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
   [BASE] = LAYOUT_ortho_5x15(  // Base layer: Colemak with home row mods.
-    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , QK_BOOT, EXIT    , _______    , KC_6   , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
-    KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B   , DF(BASE), RGB_VAI, DF(QWERTY) , KC_J   , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
-    KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G   , KC_MRWD, KC_MPLY , KC_MFFD    , KC_M   , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
-    KC_LSFT, HOME_Z , KC_X   , KC_C   , KC_D   , KC_V   , KC_LBRC, KC_UP   , KC_RBRC    , KC_K   , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , KC_RSFT,
-    // KC_LCTL, XXXXXXX, KC_LALT, KC_LGUI,
-    //                         LT(_TMUX, KC_ESC),LT(_RAISE, KC_BSPC), KC_DOWN ,KC_LSFT,
-    //                                                          LT(_LOWER, KC_SPC) , LT(_MAINTENANCE, KC_ENT), KC_BSLS, SELWORD, REPEAT    , KC_RCTL
-    MO(SYM), KC_UNDS, KC_WH_D, KC_DEL , KC_SPC , KC_BTN1, KC_LEFT, KC_DOWN, KC_RGHT , KC_MINS, ALTREP , KC_BSLS, SELWORD, REPEAT    , KC_RCTL
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , KC_MUTE , KC_VOLD , KC_VOLU    , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , DF(BASE), RGB_VAI , DF(QWERTY) , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
+    KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G    , KC_MRWD , KC_MPLY , KC_MFFD    , KC_M    , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
+    KC_LSFT, HOME_Z , KC_X   , KC_C   , KC_D   , KC_V    , KC_LBRC , KC_UP   , KC_RBRC    , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , KC_RSFT,
+    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______ ,_______  , _______    , LR_LOWER, LR_MAIN, SELWORD, REPEAT , ALTREP    , KC_MINS
   ),
 
   [QWERTY] = LAYOUT_ortho_5x15(  // Alternative base layer: QWERTY.
-    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______,_______, _______   , KC_6   , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
-    KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  DF(BASE),_______,DF(QWERTY), KC_Y   , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
-    KC_ESC , QHOME_A, QHOME_S, QHOME_D, QHOME_F, KC_G   ,  _______,_______, _______   , KC_H   , QHOME_J, QHOME_K, QHOME_L, QHOME_SC, KC_ENT,
-    KC_LSFT, QHOME_Z, KC_X   , KC_C   , KC_V   , KC_B   ,  _______,_______, _______   , KC_N   , KC_M   , KC_COMM, KC_DOT , QHOME_SL, KC_RSFT,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_RCTL
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______,_______, _______   , KC_6    , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______,_______, _______   , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
+    KC_ESC , QHOME_A, QHOME_S, QHOME_D, QHOME_F, KC_G   ,  _______,_______, _______   , KC_H    , QHOME_J, QHOME_K, QHOME_L, QHOME_SC, KC_ENT,
+    KC_LSFT, QHOME_Z, KC_X   , KC_C   , KC_V   , KC_B   ,  _______,_______, _______   , KC_N    , KC_M   , KC_COMM, KC_DOT , QHOME_SL, KC_RSFT,
+    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______,_______, _______   , LR_LOWER, LR_MAIN,SELWORD, REPEAT , ALTREP , KC_MINS
+  ),
+
+  [SYM] = LAYOUT_ortho_5x15(
+    KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4    , KC_F5     , _______,_______, _______   , KC_F6  , KC_F7  , KC_F8        , KC_F9  , KC_F10  , KC_BSPC,
+    KC_TAB , KC_QUOT, KC_LABK, KC_RABK, KC_DQUO  , KC_DOT    , _______,_______, _______   , KC_AMPR, SCOPE  , KC_LBRC      , KC_RBRC, KC_PERC , KC_DEL,
+    KC_ESC , KC_EXLM, KC_MINS, KC_PLUS, KC_EQL   , KC_HASH   , _______,_______, _______   , KC_PIPE, KC_COLN, KC_LPRN      , KC_RPRN, KC_QUES , KC_ENT,
+    KC_LSFT, KC_CIRC, KC_SLSH, KC_ASTR, KC_BSLS  , UPDIR     , _______,_______, _______   , KC_TILD, KC_DLR , KC_LCBR      , KC_RCBR, KC_AT   , KC_RSFT,
+    _______, _______, TMUXESC, USRNAME, C(KC_END), C(KC_HOME), _______,_______, _______   , KC_END , KC_HOME, TO(MAINTENCE), _______, _______ , KC_RCTL
+  ),
+
+  [LOWER] = LAYOUT_ortho_5x15(
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5         ,  _______,_______, _______   , KC_6            , KC_7         , KC_8         , KC_9   , KC_0    , KC_BSPC,
+    KC_TAB , _______, _______, KC_RBRC, KC_RPRN, LSFT(KC_RBRC),  _______,_______, _______   , KC_DQUO         , LCTL(KC_LEFT), LCTL(KC_RGHT), KC_QUOT, _______ , KC_DEL,
+    KC_ESC , _______, KC_PIPE, KC_LBRC, KC_LPRN, LSFT(KC_LBRC),  _______,_______, _______   , KC_LEFT         , KC_DOWN,       KC_UP,         KC_RGHT, _______ , KC_ENT,
+    KC_LSFT, _______, KC_SLSH, LSFT(KC_EQL), KC_SCLN , KC_MINS,  _______,_______, _______   , LSFT(KC_MINS)   , KC_COLN,       KC_EQL,        KC_BSLS, _______ , KC_RSFT,
+    _______, _______, _______, _______, _______, _______      ,  _______,_______, _______   , _______, _______, _______, _______, _______ , KC_RCTL
+  ),
+
+  [RAISE] = LAYOUT_ortho_5x15(
+    KC_GRV , MC_HARPOON_1 , MC_HARPOON_2 ,MC_HARPOON_3,MC_HARPOON_4   , MC_HARPOON_5 ,  QK_BOOT, EXIT  , _______   , _______    , _______        , _______       , _______    , _______, KC_BSPC,
+    KC_TAB , MC_QUIT      , _______      , LCTL(KC_H) , LCTL(KC_L)    , MC_BUFFERS   ,  _______,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
+    KC_ESC , _______      , _______      , LSFT(KC_L) , LSFT(KC_U)    , LCTL(KC_BSLS),  _______,_______, _______   , LCTL(KC_D) , MC_PREV_BUFFER , MC_NEXT_BUFFER, _______    , _______, KC_ENT,
+    KC_LSFT, _______      , _______      , MC_CPR     , MC_DELETE_WORD, MC_MAXIMIZER ,  _______,_______, _______   , MC_SAVE    , MC_VISTA       , MC_PREV_TAB   , MC_NEXT_TAB, _______, KC_RSFT,
+    _______, _______      , _______      , _______    , _______       , _______      ,  _______,_______, _______   , _______    , _______        , _______       , _______    , _______, KC_RCTL
+  ),
+
+  [MAINTENCE] = LAYOUT_ortho_5x15(
+    KC_GRV , _______, RGB_VAD , RGB_VAI , RGB_RMOD , _______ ,  QK_BOOT, EXIT  , _______   , _______, _______, _______, _______, _______, KC_BSPC,
+    KC_TAB , _______, RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_DEL,
+    KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_ENT,
+    KC_LSFT, _______, RGB_SAD , RGB_SAI , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RSFT,
+    _______, _______, _______ , _______ , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RCTL
+  ),
+
+  [TMUX] = LAYOUT_ortho_5x15(
+    KC_GRV , _______              , _______           , _______      , _______        , _______        ,  QK_BOOT, EXIT  , _______   , _______            , _______             , _______           , _______             , _______, KC_BSPC,
+    KC_TAB , MC_TMUX_KILL_SESSION , MC_TMUX_KILL_PANE , MC_TMUX_PREV , MC_TMUX_NEXT   , MC_TMUX_CHSH   ,  _______,_______, _______   , MC_TMUX_SESSIONIZER, _______             , MC_TMUX_INSTALL   , _______             , _______, KC_DEL,
+    KC_ESC , MC_TMUX_RELOAD       , MC_TMUX_RESTORE   , MC_TMUX_SAVE , MC_TMUX_NEW    , MC_TMUX_RENAME ,  _______,_______, _______   , MC_TMUX_SWITCH_LEFT, MC_TMUX_SWITCH_DOWN , MC_TMUX_SWITCH_UP , MC_TMUX_SWITCH_RIGHT, _______, KC_ENT,
+    KC_LSFT, _______              , _______           , _______      , MC_TMUX_DETACH , MC_TMUX_SPLIT_V,  _______,_______, _______   , _______            , MC_TMUX_SPLIT_H     , _______           , _______             , _______, KC_RSFT,
+    _______, _______              , _______           , _______      , _______        , _______        ,  _______,_______, _______   , _______            , _______             , _______           , _______             , _______, KC_RCTL
   )
 };
 // clang-format on
@@ -207,6 +290,9 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
         return true;
       }
       break;
+
+    default:
+      return true;
   }
 
   // Also allow same-hand holds when the other key is in the rows below the
@@ -263,6 +349,12 @@ char sentence_case_press_user(uint16_t keycode, keyrecord_t* record,
   return '\0';
 }
 
+typedef enum {
+    PROCESS_RECORD_RETURN_TRUE,
+    PROCESS_RECORD_RETURN_FALSE,
+    PROCESS_RECORD_CONTINUE
+} process_record_result_t;
+
 // clang-format off
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   if (!process_achordion(keycode, record)) { return false; }
@@ -282,56 +374,284 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
   if (record->event.pressed) {
     switch (keycode) {
-      case EXIT:
-        layer_off(ADJUST);
+        case EXIT:
+        layer_off(MAINTENCE);
         return false;
 
-      case SCOPE:
+        case SCOPE:
         SEND_STRING("::");
         return false;
 
-      case UPDIR:
+        case UPDIR:
         SEND_STRING("../");
         return false;
 
-      case TMUXESC:  // Enter copy mode in Tmux.
+        case TMUXESC:  // Enter copy mode in Tmux.
         SEND_STRING(SS_LCTL("a") SS_TAP(X_ESC));
         return false;
 
-      case SRCHSEL:  // Searches the current selection in a new tab.
+        case SRCHSEL:  // Searches the current selection in a new tab.
         // Mac users, change LCTL to LGUI.
         SEND_STRING(SS_LCTL("ct") SS_DELAY(100) SS_LCTL("v") SS_TAP(X_ENTER));
         return false;
 
-      case USRNAME: {  // Type my username, or if Shift is held, my last name.
+        case USRNAME: {  // Type my username, or if Shift is held, my last name.
         static const char username[] PROGMEM = "getreuer";
         static const char last_name[] PROGMEM = "Getreuer";
         clear_weak_mods();
         unregister_mods(mods);  // Clear mods before send_string.
         send_string_P(shifted ? last_name : username);
         register_mods(mods);  // Restore mods.
-      } break;
+        } break;
 
-      // The following cases type a few Unicode symbols.
-      //
-      // `send_unicode_hex_string()` is deprecated. The docs suggest to ensure
-      // keymap.c is UTF-8 encoded and write literal Unicode characters in the
-      // string passed to `send_unicode_string()`. Unfortunately, terminals can
-      // have problems displaying Unicode correctly with monospaced width (or
-      // at all). So we take another approach: write escape codes `\xhh` for the
-      // UTF-8 encoding.
+        // The following cases type a few Unicode symbols.
+        //
+        // `send_unicode_hex_string()` is deprecated. The docs suggest to ensure
+        // keymap.c is UTF-8 encoded and write literal Unicode characters in the
+        // string passed to `send_unicode_string()`. Unfortunately, terminals can
+        // have problems displaying Unicode correctly with monospaced width (or
+        // at all). So we take another approach: write escape codes `\xhh` for the
+        // UTF-8 encoding.
 
-      case DASH:  // En dash, or em dash when shifted.
+        case DASH:  // En dash, or em dash when shifted.
         send_unicode_string(shifted ? "\xe2\x80\x94" : "\xe2\x80\x93");
         return false;
 
-      case ARROW:  // -> Unicode arrow, or => when shifted.
+        case ARROW:  // -> Unicode arrow, or => when shifted.
         send_unicode_string(shifted ? "\xe2\x87\x92" : "\xe2\x86\x92");
         return false;
 
-      case THMBUP:  // Thumbs up emoji, or party emoji when shifted.
+        case THMBUP:  // Thumbs up emoji, or party emoji when shifted.
         send_unicode_string(shifted ? "\xf0\x9f\xa5\xb3" : "\xf0\x9f\x91\x8d");
         return false;
+                // Vim
+        case MC_CPR:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":%s///g");
+            SEND_STRING(SS_TAP(X_LEFT) SS_TAP(X_LEFT) SS_TAP(X_LEFT));
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_COMMENT:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" /");
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_DELETE_WORD:
+            tap_code(KC_D);
+            tap_code(KC_I);
+            tap_code(KC_W);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_SAVE:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":w");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_QUIT:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":q");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_VISTA:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":Vista!!");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_NEXT_TAB:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":tabnext");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_PREV_TAB:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":tabprevious");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_BUFFERS:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":lua require(\" user.bfs\").open()");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_MAXIMIZER:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":MaximizerToggle");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_1:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_1);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_2:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_2);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_3:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_3);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_4:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_4);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_5:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_5);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_6:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_6);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_7:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_7);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_8:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_8);
+            return  PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_9:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_9);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_HARPOON_0:
+            tap_code(KC_ESCAPE);
+            SEND_STRING("M");
+            tap_code(KC_0);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_NEXT_BUFFER:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":bnext");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_PREV_BUFFER:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(":bprevious");
+            tap_code(KC_ENT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        // Tmux
+
+        case MC_TMUX_NEXT:
+            tap_code16(LCTL(KC_B));
+            SEND_STRING("n");
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_PREV:
+            tap_code16(LCTL(KC_B));
+            SEND_STRING("p");
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SPLIT_H:
+            tap_code16(LCTL(KC_B));
+            tap_code16(KC_H);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SPLIT_V:
+            tap_code16(LCTL(KC_B));
+            tap_code16(KC_V);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_RELOAD:
+            tap_code16(LCTL(KC_B));
+            tap_code16(KC_R);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_RENAME:
+            tap_code16(LCTL(KC_B));
+            tap_code16(KC_COMM);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SWITCH_UP:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_UP);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SWITCH_DOWN:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_DOWN);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SWITCH_LEFT:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_LEFT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SWITCH_RIGHT:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_RGHT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_KILL_SESSION:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_Q);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_KILL_PANE:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_W);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_NEW:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_C);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_INSTALL:
+            tap_code16(LCTL(KC_B));
+            tap_code16(LSFT(KC_U));
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_DETACH:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_D);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SAVE:
+            tap_code16(LCTL(KC_B));
+            tap_code16(LCTL(KC_S));
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_CHSH:
+            tap_code16(LCTL(KC_B));
+            tap_code16(KC_I);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SESSIONIZER:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_F);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_RESTORE:
+              tap_code16(LCTL(KC_B));
+              tap_code16(LCTL(KC_R));
+              return PROCESS_RECORD_RETURN_FALSE;
     }
   }
 
@@ -342,4 +662,56 @@ void matrix_scan_user(void) {
   achordion_task();
   select_word_task();
   sentence_case_task();
+}
+
+int leds[] = {
+     68, 67, 66, 65, 64, /*    */ 60, 59, 58, 57, 56,
+     53, 52, 51 ,50, 49, /*    */ 45, 44, 43, 42, 41,
+     38, 37, 36, 35, 34, /*    */ 30, 29, 28, 27, 26,
+};
+const int led_count = 30;
+
+void set_rgblight_by_layer(uint32_t layer) {
+     switch (layer) {
+          case BASE:
+               break;
+          case LOWER:
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_WHITE);
+               }
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_PURPLE);
+               }
+               break;
+          case RAISE:
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_WHITE);
+               }
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_RED);
+               }
+               break;
+          case MAINTENCE:
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_WHITE);
+               }
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_SPRINGGREEN);
+               }
+               break;
+          default:
+               for (int i = 0; i < led_count; i++) {
+                    rgb_matrix_set_color(leds[i], RGB_WHITE);
+               }
+               break;
+     }
+}
+
+void set_current_layer_rgb(void) {
+    set_rgblight_by_layer(get_highest_layer(layer_state | default_layer_state));
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    set_rgblight_by_layer(biton32(state));
+    return state;
 }

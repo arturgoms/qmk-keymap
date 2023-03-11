@@ -41,13 +41,18 @@ BLUETOOTH_ENABLE = no      # Enable Bluetooth with the Adafruit EZ-Key HID
 RGBLIGHT_ENABLE = no       # Enable WS2812 RGB underlight.
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
-AUTOCORRECT_ENABLE = yes
-CAPS_WORD_ENABLE = yes
+AUTOCORRECT_ENABLE = no
+CAPS_WORD_ENABLE = no
 
 UNICODEMAP_ENABLE = yes
 COMBO_ENABLE = yes
 TAP_DANCE_ENABLE = no
 LTO_ENABLE = yes
+
+
+SPACE_CADET_ENABLE = no
+GRAVE_EMC_ENABLE = no
+MAGIC_ENABLE = no
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend
