@@ -131,7 +131,6 @@ enum custom_keycodes {
 #define HOME_S LSFT_T(KC_S)
 #define HOME_T LCTL_T(KC_T)
 #define HOME_Z LGUI_T(KC_Z)
-
 #define HOME_N RCTL_T(KC_N)
 #define HOME_E RSFT_T(KC_E)
 #define HOME_I LALT_T(KC_I)
@@ -162,7 +161,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , DF(BASE), RGB_VAI , DF(QWERTY) , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
     KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G    , KC_MRWD , KC_MPLY , KC_MFFD    , KC_M    , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
     KC_LSFT, HOME_Z , KC_X   , KC_C   , KC_D   , KC_V    , KC_LBRC , KC_UP   , KC_RBRC    , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , KC_RSFT,
-    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______ ,_______  , _______    , LR_LOWER, LR_MAIN, SELWORD, REPEAT , ALTREP    , KC_MINS
+    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______ ,_______  , _______    , LR_LOWER, LR_MAIN, SELWORD, REPEAT , ALTREP    , KC_RCTL
   ),
 
   [QWERTY] = LAYOUT_ortho_5x15(  // Alternative base layer: QWERTY.
@@ -199,8 +198,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
 
   [MAINTENCE] = LAYOUT_ortho_5x15(
     KC_GRV , _______, RGB_VAD , RGB_VAI , RGB_RMOD , _______ ,  QK_BOOT, EXIT  , _______   , _______, _______, _______, _______, _______, KC_BSPC,
-    KC_TAB , _______, RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_DEL,
-    KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_ENT,
+    KC_TAB , _______, RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______,_______, _______   , KC_WH_U, _______, _______, _______, _______, KC_DEL,
+    KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , _______ ,  _______,_______, _______   , KC_WH_D, _______, _______, _______, _______, KC_ENT,
     KC_LSFT, _______, RGB_SAD , RGB_SAI , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RSFT,
     _______, _______, _______ , _______ , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RCTL
   ),
@@ -218,8 +217,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
 const uint32_t unicode_map[] PROGMEM = {};
 
 const custom_shift_key_t custom_shift_keys[] = {
-    {KC_DOT, KC_QUES},  // Shift . is ?
-    {KC_COMM, KC_EXLM},
+    // {KC_DOT, KC_QUES},  // Shift . is ?
+    // {KC_COMM, KC_EXLM},
     {KC_EQL, KC_EQL},  // Don't shift =
     {KC_SLSH, KC_SLSH},  // Don't shift /
 };
@@ -714,4 +713,29 @@ void set_current_layer_rgb(void) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     set_rgblight_by_layer(biton32(state));
     return state;
+}
+
+bool rgb_matrix_indicators_user(void) {
+    uint8_t mods                = get_mods();
+    uint8_t oneshot_mods        = get_oneshot_mods();
+    uint8_t oneshot_locked_mods = get_oneshot_locked_mods();
+
+    bool isShift = mods & MOD_MASK_SHIFT || oneshot_mods & MOD_MASK_SHIFT || oneshot_locked_mods & MOD_MASK_SHIFT;
+    bool isCtrl  = mods & MOD_MASK_CTRL || oneshot_mods & MOD_MASK_CTRL || oneshot_locked_mods & MOD_MASK_CTRL;
+    bool isAlt   = mods & MOD_MASK_ALT || oneshot_mods & MOD_MASK_ALT || oneshot_locked_mods & MOD_MASK_ALT;
+    bool isGui   = mods & MOD_MASK_GUI || oneshot_mods & MOD_MASK_GUI || oneshot_locked_mods & MOD_MASK_GUI;
+
+    for (int i = 0; i < led_count; i++) {
+        if (isShift) {
+            rgb_matrix_set_color(leds[i], RGB_SPRINGGREEN);
+        } else if (isCtrl) {
+            rgb_matrix_set_color(leds[i], RGB_RED);
+        } else if ( isAlt || isGui) {
+            rgb_matrix_set_color(leds[i], RGB_WHITE);
+        } else {
+            set_current_layer_rgb();
+        }
+    }
+
+    return true;
 }

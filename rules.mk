@@ -29,7 +29,7 @@ SRC += features/sentence_case.c
 #   ATmega328P   USBasp
 
 BOOTMAGIC_ENABLE = no      # Virtual DIP switch configuration(+1000)
-MOUSEKEY_ENABLE = no      # Mouse keys(+4700)
+MOUSEKEY_ENABLE = yes      # Mouse keys(+4700)
 EXTRAKEY_ENABLE = yes      # Audio control and System control(+450)
 CONSOLE_ENABLE = no        # Console for debug(+400)
 COMMAND_ENABLE = no        # Commands for debug and configuration
@@ -41,18 +41,14 @@ BLUETOOTH_ENABLE = no      # Enable Bluetooth with the Adafruit EZ-Key HID
 RGBLIGHT_ENABLE = no       # Enable WS2812 RGB underlight.
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
-AUTOCORRECT_ENABLE = no
-CAPS_WORD_ENABLE = no
+AUTOCORRECT_ENABLE = yes
+CAPS_WORD_ENABLE = yes
+RGB_MATRIX_ENABLE = yes
 
 UNICODEMAP_ENABLE = yes
 COMBO_ENABLE = yes
 TAP_DANCE_ENABLE = no
 LTO_ENABLE = yes
-
-
-SPACE_CADET_ENABLE = no
-GRAVE_EMC_ENABLE = no
-MAGIC_ENABLE = no
 
 # Do not enable SLEEP_LED_ENABLE. it uses the same timer as BACKLIGHT_ENABLE
 SLEEP_LED_ENABLE = no    # Breathing sleep LED during USB suspend
