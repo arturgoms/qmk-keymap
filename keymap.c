@@ -50,8 +50,7 @@
 
 enum layers {
     BASE,
-    QWERTY,
-    SYM,
+    GAMER,
     LOWER,
     RAISE,
     MAINTENCE,
@@ -124,92 +123,86 @@ enum custom_keycodes {
 // +-------+-------+-------+-------+   +-------+-------+-------+-------+
 // |  Gui  |                                                   |  Gui  |
 // +-------+                                                   +-------+
-
-// Home row mods for Dvorak layer.
-#define HOME_A LT(SYM, KC_A)
-#define HOME_R LALT_T(KC_R)
-#define HOME_S LSFT_T(KC_S)
-#define HOME_T LCTL_T(KC_T)
-#define HOME_Z LGUI_T(KC_Z)
-#define HOME_N RCTL_T(KC_N)
-#define HOME_E RSFT_T(KC_E)
-#define HOME_I LALT_T(KC_I)
-#define HOME_O LT(SYM, KC_O)
+// zz
+// Home row mods for Colemak layer.
+// #define HOME_A LT(SYM, KC_A)
+// #define HOME_R LALT_T(KC_R)
+#define HOME_S MT(MOD_LALT, KC_S)
+#define HOME_T MT(MOD_LGUI, KC_T)
+#define HOME_N MT(MOD_RGUI, KC_N)
+#define HOME_E MT(MOD_RALT, KC_E)
+// #define HOME_I LALT_T(KC_I)
+// #define HOME_O LT(SYM, KC_O)
 #define HOME_SLSH RGUI_T(KC_SLSH)
 
 // Home row mods for QWERTY layer.
-#define QHOME_A LT(SYM, KC_A)
+// #define QHOME_A LT(SYM, KC_A)
 #define QHOME_S LALT_T(KC_S)
 #define QHOME_D LSFT_T(KC_D)
 #define QHOME_F LCTL_T(KC_F)
 #define QHOME_J RCTL_T(KC_J)
-#define QHOME_K RSFT_T(KC_K)
+// #define QHOME_K RSFT_T(KC_K)
 #define QHOME_L LALT_T(KC_L)
-#define QHOME_SC LT(SYM, KC_SCLN)
+// #define QHOME_SC LT(SYM, KC_SCLN)
 #define QHOME_Z LGUI_T(KC_Z)
 #define QHOME_SL RGUI_T(KC_SLSH)
 
-#define LR_TMUX  LT(TMUX, LCTL(KC_B))  // This ESC is useless
+#define LR_TMUX  LT(TMUX, LCTL(KC_B))
 #define LR_RAISE LT(RAISE, KC_BSPC)
 #define LR_LOWER LT(LOWER, KC_SPC)
 #define LR_MAIN  LT(MAINTENCE, KC_ENT)
+#define MOD_SFEN  OSM(MOD_LSFT)
+#define MOD_CTEN  OSM(MOD_LCTL)
+#define KC_PPM KC_MEDIA_PLAY_PAUSE
 
 // clang-format off
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
   [BASE] = LAYOUT_ortho_5x15(  // Base layer: Colemak with home row mods.
-    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , KC_MUTE , KC_VOLD , KC_VOLU    , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
-    KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , DF(BASE), RGB_VAI , DF(QWERTY) , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
-    KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G    , KC_MRWD , KC_MPLY , KC_MFFD    , KC_M    , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
-    KC_LSFT, HOME_Z , KC_X   , KC_C   , KC_D   , KC_V    , KC_LBRC , KC_UP   , KC_RBRC    , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , KC_RSFT,
-    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______ ,_______  , _______    , LR_LOWER, LR_MAIN, SELWORD, REPEAT , ALTREP    , KC_RCTL
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , REPEAT,
+    KC_ESC , KC_A   , KC_R   , HOME_S , HOME_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , KC_I   , KC_O      , KC_ENT,
+    _______, KC_Z   , KC_X   , KC_C   , KC_D   , KC_V    , _______ ,_______, _______ , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , _______,
+    _______,_______ , _______, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, _______, _______, _______   , _______
   ),
 
-  [QWERTY] = LAYOUT_ortho_5x15(  // Alternative base layer: QWERTY.
-    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______,_______, _______   , KC_6    , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
-    KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______,_______, _______   , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
-    KC_ESC , QHOME_A, QHOME_S, QHOME_D, QHOME_F, KC_G   ,  _______,_______, _______   , KC_H    , QHOME_J, QHOME_K, QHOME_L, QHOME_SC, KC_ENT,
-    KC_LSFT, QHOME_Z, KC_X   , KC_C   , KC_V   , KC_B   ,  _______,_______, _______   , KC_N    , KC_M   , KC_COMM, KC_DOT , QHOME_SL, KC_RSFT,
-    KC_LCTL, MO(SYM), KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, _______,_______, _______   , LR_LOWER, LR_MAIN,SELWORD, REPEAT , ALTREP , KC_MINS
-  ),
-
-  [SYM] = LAYOUT_ortho_5x15(
-    KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4    , KC_F5     , _______,_______, _______   , KC_F6  , KC_F7  , KC_F8        , KC_F9  , KC_F10  , KC_BSPC,
-    KC_TAB , KC_QUOT, KC_LABK, KC_RABK, KC_DQUO  , KC_DOT    , _______,_______, _______   , KC_AMPR, SCOPE  , KC_LBRC      , KC_RBRC, KC_PERC , KC_DEL,
-    KC_ESC , KC_EXLM, KC_MINS, KC_PLUS, KC_EQL   , KC_HASH   , _______,_______, _______   , KC_PIPE, KC_COLN, KC_LPRN      , KC_RPRN, KC_QUES , KC_ENT,
-    KC_LSFT, KC_CIRC, KC_SLSH, KC_ASTR, KC_BSLS  , UPDIR     , _______,_______, _______   , KC_TILD, KC_DLR , KC_LCBR      , KC_RCBR, KC_AT   , KC_RSFT,
-    _______, _______, TMUXESC, USRNAME, C(KC_END), C(KC_HOME), _______,_______, _______   , KC_END , KC_HOME, TO(MAINTENCE), _______, _______ , KC_RCTL
+  [GAMER] = LAYOUT_ortho_5x15(  // Alternative base layer: GAMER.
+    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
+    KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______ ,_______, _______ , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
+    KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,  _______ ,_______, _______ , KC_H    , KC_J   , KC_K    , KC_L   , KC_SCLN , KC_ENT,
+    _______, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,  _______ ,_______, _______ , KC_N    , KC_M   , KC_COMM, KC_DOT , KC_SLSH , _______,
+    _______, _______, _______, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, _______, _______, _______ , _______
   ),
 
   [LOWER] = LAYOUT_ortho_5x15(
-    KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5         ,  _______,_______, _______   , KC_6            , KC_7         , KC_8         , KC_9   , KC_0    , KC_BSPC,
-    KC_TAB , _______, _______, KC_RBRC, KC_RPRN, LSFT(KC_RBRC),  _______,_______, _______   , KC_DQUO         , LCTL(KC_LEFT), LCTL(KC_RGHT), KC_QUOT, _______ , KC_DEL,
-    KC_ESC , _______, KC_PIPE, KC_LBRC, KC_LPRN, LSFT(KC_LBRC),  _______,_______, _______   , KC_LEFT         , KC_DOWN,       KC_UP,         KC_RGHT, _______ , KC_ENT,
-    KC_LSFT, _______, KC_SLSH, LSFT(KC_EQL), KC_SCLN , KC_MINS,  _______,_______, _______   , LSFT(KC_MINS)   , KC_COLN,       KC_EQL,        KC_BSLS, _______ , KC_RSFT,
-    _______, _______, _______, _______, _______, _______      ,  _______,_______, _______   , _______, _______, _______, _______, _______ , KC_RCTL
+    KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4    , KC_F5      ,  _______ ,_______, _______ , KC_F6  , KC_F7  , KC_F8        , KC_F9  , KC_F10  , KC_BSPC,
+    KC_TAB , _______, SELWORD, KC_RBRC, KC_RPRN, LSFT(KC_RBRC),  _______ ,_______, _______ , KC_DQUO         , LCTL(KC_LEFT), LCTL(KC_RGHT), KC_QUOT, _______ , KC_DEL,
+    KC_ESC , _______, KC_PIPE, KC_LBRC, KC_LPRN, LSFT(KC_LBRC),  _______ ,_______, _______ , KC_LEFT         , KC_DOWN,       KC_UP,         KC_RGHT, _______ , KC_ENT,
+    _______, _______, KC_SLSH, LSFT(KC_EQL), KC_SCLN , KC_MINS,  _______ ,_______, _______ , LSFT(KC_MINS)   , KC_COLN,       KC_EQL,        KC_BSLS, _______ , _______,
+    _______, _______, _______, _______, _______, _______      ,  _______ ,_______, _______ , _______, _______, _______, _______, _______ ,_______
   ),
 
   [RAISE] = LAYOUT_ortho_5x15(
-    KC_GRV , MC_HARPOON_1 , MC_HARPOON_2 ,MC_HARPOON_3,MC_HARPOON_4   , MC_HARPOON_5 ,  QK_BOOT, EXIT  , _______   , _______    , _______        , _______       , _______    , _______, KC_BSPC,
-    KC_TAB , MC_QUIT      , _______      , LCTL(KC_H) , LCTL(KC_L)    , MC_BUFFERS   ,  _______,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
-    KC_ESC , _______      , _______      , LSFT(KC_L) , LSFT(KC_U)    , LCTL(KC_BSLS),  _______,_______, _______   , LCTL(KC_D) , MC_PREV_BUFFER , MC_NEXT_BUFFER, _______    , _______, KC_ENT,
-    KC_LSFT, _______      , _______      , MC_CPR     , MC_DELETE_WORD, MC_MAXIMIZER ,  _______,_______, _______   , MC_SAVE    , MC_VISTA       , MC_PREV_TAB   , MC_NEXT_TAB, _______, KC_RSFT,
-    _______, _______      , _______      , _______    , _______       , _______      ,  _______,_______, _______   , _______    , _______        , _______       , _______    , _______, KC_RCTL
+    KC_GRV , MC_HARPOON_1 , MC_HARPOON_2 ,MC_HARPOON_3,MC_HARPOON_4   , MC_HARPOON_5 ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______, KC_BSPC,
+    KC_TAB , MC_QUIT      , _______      , LCTL(KC_H) , LCTL(KC_L)    , MC_BUFFERS   ,  _______ ,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
+    KC_ESC , _______      , _______      , LSFT(KC_L) , LSFT(KC_U)    , LCTL(KC_BSLS),  _______ ,_______, _______   , LCTL(KC_D) , MC_PREV_BUFFER , MC_NEXT_BUFFER, _______    , _______, KC_ENT,
+    _______, _______      , _______      , MC_CPR     , MC_DELETE_WORD, MC_MAXIMIZER ,  _______ ,_______, _______   , MC_SAVE    , MC_VISTA       , MC_PREV_TAB   , MC_NEXT_TAB, _______, KC_RSFT,
+    _______, _______      , _______      , _______    , _______       , _______      ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______,_______
   ),
 
   [MAINTENCE] = LAYOUT_ortho_5x15(
-    KC_GRV , _______, RGB_VAD , RGB_VAI , RGB_RMOD , _______ ,  QK_BOOT, EXIT  , _______   , _______, _______, _______, _______, _______, KC_BSPC,
-    KC_TAB , _______, RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______,_______, _______   , KC_WH_U, _______, _______, _______, _______, KC_DEL,
-    KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , _______ ,  _______,_______, _______   , KC_WH_D, _______, _______, _______, _______, KC_ENT,
-    KC_LSFT, _______, RGB_SAD , RGB_SAI , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RSFT,
-    _______, _______, _______ , _______ , _______  , _______ ,  _______,_______, _______   , _______, _______, _______, _______, _______, KC_RCTL
+    KC_GRV , QK_BOOT, RGB_VAD , RGB_VAI , RGB_RMOD , _______ ,  _______ ,_______, _______   , _______, _______, _______, _______, _______, KC_BSPC,
+    KC_TAB , EXIT   , RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______ ,_______, _______   , KC_WH_U, _______, _______, _______, _______, KC_DEL,
+    KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , DF(GAMER),  _______ ,_______, _______  , KC_WH_D, _______, _______, _______, _______, KC_ENT,
+    KC_LSFT, _______, RGB_SAD , RGB_SAI , _______  , DF(BASE),  _______ ,_______, _______   , _______, _______, _______, _______, _______, KC_RSFT,
+    _______, _______, _______ , _______ , _______  , _______ ,  _______ ,_______, _______   , _______, _______, _______, _______, _______,_______
   ),
 
   [TMUX] = LAYOUT_ortho_5x15(
-    KC_GRV , _______              , _______           , _______      , _______        , _______        ,  QK_BOOT, EXIT  , _______   , _______            , _______             , _______           , _______             , _______, KC_BSPC,
+    KC_GRV , _______              , _______           , _______      , _______        , _______        ,  _______,_______, _______   , _______            , _______             , _______           , _______             , _______, KC_BSPC,
     KC_TAB , MC_TMUX_KILL_SESSION , MC_TMUX_KILL_PANE , MC_TMUX_PREV , MC_TMUX_NEXT   , MC_TMUX_CHSH   ,  _______,_______, _______   , MC_TMUX_SESSIONIZER, _______             , MC_TMUX_INSTALL   , _______             , _______, KC_DEL,
     KC_ESC , MC_TMUX_RELOAD       , MC_TMUX_RESTORE   , MC_TMUX_SAVE , MC_TMUX_NEW    , MC_TMUX_RENAME ,  _______,_______, _______   , MC_TMUX_SWITCH_LEFT, MC_TMUX_SWITCH_DOWN , MC_TMUX_SWITCH_UP , MC_TMUX_SWITCH_RIGHT, _______, KC_ENT,
-    KC_LSFT, _______              , _______           , _______      , MC_TMUX_DETACH , MC_TMUX_SPLIT_V,  _______,_______, _______   , _______            , MC_TMUX_SPLIT_H     , _______           , _______             , _______, KC_RSFT,
-    _______, _______              , _______           , _______      , _______        , _______        ,  _______,_______, _______   , _______            , _______             , _______           , _______             , _______, KC_RCTL
+    _______, _______              , _______           , _______      , MC_TMUX_DETACH , MC_TMUX_SPLIT_V,  _______,_______, _______   , _______            , MC_TMUX_SPLIT_H     , _______           , _______             , _______, _______,
+    _______, _______              , _______           , _______      , _______        , _______        ,  _______ ,_______, _______   , _______            , _______             , _______           , _______             , _______,_______
   )
 };
 // clang-format on
@@ -242,11 +235,10 @@ bool get_tapping_force_hold(uint16_t keycode, keyrecord_t* record) {
     case HOME_T:
     case HOME_N:
     case QHOME_J:
-    case QHOME_K:
     case QHOME_L:
     // Repeating Z is useful for spamming undo.
-    case HOME_Z:
-      return false;  // Enable key repeating.
+    // case HOME_Z:
+    //   return false;  // Enable key repeating.
     default:
       return true;  // Otherwise, force hold and disable key repeating.
   }
@@ -278,17 +270,17 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
   // Exceptionally consider the following chords as holds, even though they
   // are on the same hand in Dvorak.
   switch (tap_hold_keycode) {
-    case HOME_A:  // A + U.
-      if (other_keycode == HOME_T) {
-        return true;
-      }
-      break;
-
-    case HOME_O:  // S + H and S + G.
-      if (other_keycode == HOME_N || other_keycode == KC_L) {
-        return true;
-      }
-      break;
+    // case HOME_A:  // A + U.
+    //   if (other_keycode == HOME_T) {
+    //     return true;
+    //   }
+    //   break;
+    //
+    // case HOME_O:  // S + H and S + G.
+    //   if (other_keycode == HOME_N || other_keycode == KC_L) {
+    //     return true;
+    //   }
+    //   break;
 
     default:
       return true;
@@ -305,10 +297,10 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
 }
 
 uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
-  switch (tap_hold_keycode) {
-    case HOME_Z:
-      return 0;  // Bypass Achordion for these keys.
-  }
+  // switch (tap_hold_keycode) {
+  //   case HOME_Z:
+  //     return 0;  // Bypass Achordion for these keys.
+  // }
 
   return 800;  // Otherwise use a timeout of 800 ms.
 }
