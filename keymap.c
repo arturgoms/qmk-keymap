@@ -47,6 +47,7 @@
 #include "features/select_word.h"
 #include "features/sentence_case.h"
 #include "layout.h"
+#include "quantum.h"
 
 enum layers {
     BASE,
@@ -110,7 +111,13 @@ enum custom_keycodes {
     MC_NEXT_BUFFER,
     MC_PREV_BUFFER,
     MC_TMUX_CHSH,
-    MC_TMUX_SESSIONIZER
+    MC_TMUX_SESSIONIZER,
+    MC_TMUX_SESSIONS,
+    MC_SHIFT_CAPS
+};
+
+enum tap_dance{
+    TD_SHIFT_CAPS,
 };
 
 // This keymap uses home row mods. In addition to mods, I have home row
@@ -147,7 +154,7 @@ enum custom_keycodes {
 #define QHOME_Z LGUI_T(KC_Z)
 #define QHOME_SL RGUI_T(KC_SLSH)
 
-#define LR_TMUX  LT(TMUX, LCTL(KC_B))
+#define LR_TMUX  LT(TMUX, KC_TAB)
 #define LR_RAISE LT(RAISE, KC_BSPC)
 #define LR_LOWER LT(LOWER, KC_SPC)
 #define LR_MAIN  LT(MAINTENCE, KC_ENT)
@@ -155,29 +162,36 @@ enum custom_keycodes {
 #define MOD_CTEN  OSM(MOD_LCTL)
 #define KC_PPM KC_MEDIA_PLAY_PAUSE
 
+// // Tap Dance definitions
+tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(MOD_LSFT, KC_CAPS),
+};
+
+
 // clang-format off
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
   [BASE] = LAYOUT_ortho_5x15(  // Base layer: Colemak with home row mods.
     KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
     KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , REPEAT,
-    KC_ESC , KC_A   , KC_R   , HOME_S , HOME_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , KC_I   , KC_O      , KC_ENT,
+    KC_ESC , KC_A   , KC_R   , KC_S   , HOME_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , KC_I   , KC_O      , KC_ENT,
     _______, KC_Z   , KC_X   , KC_C   , KC_D   , KC_V    , _______ ,_______, _______ , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , _______,
-    _______,_______ , _______, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, _______, _______, _______   , _______
+    _______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, KC_RALT, _______   , _______
   ),
 
   [GAMER] = LAYOUT_ortho_5x15(  // Alternative base layer: GAMER.
     KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   ,  _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0    , KC_BSPC,
     KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______ ,_______, _______ , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
-    KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,  _______ ,_______, _______ , KC_H    , KC_J   , KC_K    , KC_L   , KC_SCLN , KC_ENT,
+    KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,  _______ ,_______, _______ , KC_H    , KC_J   , KC_K   , KC_L   , KC_SCLN , KC_ENT,
     _______, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,  _______ ,_______, _______ , KC_N    , KC_M   , KC_COMM, KC_DOT , KC_SLSH , _______,
-    _______, _______, _______, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, _______, _______, _______ , _______
+    _______, _______, KC_LALT, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, KC_RALT, _______ , _______
   ),
 
   [LOWER] = LAYOUT_ortho_5x15(
-    KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4    , KC_F5      ,  _______ ,_______, _______ , KC_F6  , KC_F7  , KC_F8        , KC_F9  , KC_F10  , KC_BSPC,
-    KC_TAB , _______, SELWORD, KC_RBRC, KC_RPRN, LSFT(KC_RBRC),  _______ ,_______, _______ , KC_DQUO         , LCTL(KC_LEFT), LCTL(KC_RGHT), KC_QUOT, _______ , KC_DEL,
-    KC_ESC , _______, KC_PIPE, KC_LBRC, KC_LPRN, LSFT(KC_LBRC),  _______ ,_______, _______ , KC_LEFT         , KC_DOWN,       KC_UP,         KC_RGHT, _______ , KC_ENT,
-    _______, _______, KC_SLSH, LSFT(KC_EQL), KC_SCLN , KC_MINS,  _______ ,_______, _______ , LSFT(KC_MINS)   , KC_COLN,       KC_EQL,        KC_BSLS, _______ , _______,
+    KC_GRV , KC_F1  , KC_F2  , KC_F3  , KC_F4    , KC_F5      ,  _______ ,_______, _______ , KC_F6           , KC_F7        , KC_F8        , KC_F9  , KC_F10  , KC_BSPC,
+    KC_TAB , _______, SELWORD, KC_RBRC, KC_RPRN, LSFT(KC_RBRC),  _______ ,_______, _______ , KC_DQUO         , LGUI(S(KC_TAB))   , LGUI(KC_TAB)   , KC_QUOT, _______ , KC_DEL,
+    KC_ESC , _______, KC_PIPE, KC_LBRC, KC_LPRN, LSFT(KC_LBRC),  _______ ,_______, _______ , KC_LEFT         , KC_DOWN      , KC_UP        , KC_RGHT, _______ , KC_ENT,
+    _______, _______, KC_SLSH, LSFT(KC_EQL), KC_SCLN , KC_MINS,  _______ ,_______, _______ , LSFT(KC_MINS)   , KC_COLN      , KC_EQL       , KC_BSLS, _______ , _______,
     _______, _______, _______, _______, _______, _______      ,  _______ ,_______, _______ , _______, _______, _______, _______, _______ ,_______
   ),
 
@@ -201,7 +215,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     KC_GRV , _______              , _______           , _______      , _______        , _______        ,  _______,_______, _______   , _______            , _______             , _______           , _______             , _______, KC_BSPC,
     KC_TAB , MC_TMUX_KILL_SESSION , MC_TMUX_KILL_PANE , MC_TMUX_PREV , MC_TMUX_NEXT   , MC_TMUX_CHSH   ,  _______,_______, _______   , MC_TMUX_SESSIONIZER, _______             , MC_TMUX_INSTALL   , _______             , _______, KC_DEL,
     KC_ESC , MC_TMUX_RELOAD       , MC_TMUX_RESTORE   , MC_TMUX_SAVE , MC_TMUX_NEW    , MC_TMUX_RENAME ,  _______,_______, _______   , MC_TMUX_SWITCH_LEFT, MC_TMUX_SWITCH_DOWN , MC_TMUX_SWITCH_UP , MC_TMUX_SWITCH_RIGHT, _______, KC_ENT,
-    _______, _______              , _______           , _______      , MC_TMUX_DETACH , MC_TMUX_SPLIT_V,  _______,_______, _______   , _______            , MC_TMUX_SPLIT_H     , _______           , _______             , _______, _______,
+    _______, _______              , _______           , MC_TMUX_SESSIONS, MC_TMUX_DETACH , MC_TMUX_SPLIT_V,  _______,_______, _______   , _______            , MC_TMUX_SPLIT_H     , _______           , _______             , _______, _______,
     _______, _______              , _______           , _______      , _______        , _______        ,  _______ ,_______, _______   , _______            , _______             , _______           , _______             , _______,_______
   )
 };
@@ -387,8 +401,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         return false;
 
         case USRNAME: {  // Type my username, or if Shift is held, my last name.
-        static const char username[] PROGMEM = "getreuer";
-        static const char last_name[] PROGMEM = "Getreuer";
+        static const char username[] PROGMEM = "arturgoms";
+        static const char last_name[] PROGMEM = "Gomes";
         clear_weak_mods();
         unregister_mods(mods);  // Clear mods before send_string.
         send_string_P(shifted ? last_name : username);
@@ -637,6 +651,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         case MC_TMUX_SESSIONIZER:
             tap_code16(LCTL(KC_B));
             tap_code(KC_F);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_TMUX_SESSIONS:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_S);
             return PROCESS_RECORD_RETURN_FALSE;
 
         case MC_TMUX_RESTORE:
