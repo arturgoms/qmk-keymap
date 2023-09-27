@@ -176,7 +176,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , REPEAT,
     KC_ESC , KC_A   , KC_R   , KC_S   , HOME_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , KC_I   , KC_O      , KC_ENT,
     _______, KC_Z   , KC_X   , KC_C   , KC_D   , KC_V    , _______ ,_______, _______ , KC_K    , KC_H   , KC_COMM, KC_DOT , HOME_SLSH , _______,
-    _______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, KC_RALT, _______   , _______
+    _______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, CW_TOGG, _______   , _______
   ),
 
   [GAMER] = LAYOUT_ortho_5x15(  // Alternative base layer: GAMER.
@@ -184,7 +184,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______ ,_______, _______ , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
     KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,  _______ ,_______, _______ , KC_H    , KC_J   , KC_K   , KC_L   , KC_SCLN , KC_ENT,
     _______, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,  _______ ,_______, _______ , KC_N    , KC_M   , KC_COMM, KC_DOT , KC_SLSH , _______,
-    _______, _______, KC_LALT, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, KC_RALT, _______ , _______
+    _______, _______, KC_LALT, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, MOD_SFEN, LR_LOWER, LR_MAIN, KC_RGUI, CW_TOGG, _______ , _______
   ),
 
   [LOWER] = LAYOUT_ortho_5x15(
@@ -198,13 +198,13 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
   [RAISE] = LAYOUT_ortho_5x15(
     KC_GRV , MC_HARPOON_1 , MC_HARPOON_2 ,MC_HARPOON_3,MC_HARPOON_4   , MC_HARPOON_5 ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______, KC_BSPC,
     KC_TAB , MC_QUIT      , _______      , LCTL(KC_H) , LCTL(KC_L)    , MC_BUFFERS   ,  _______ ,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
-    KC_ESC , _______      , _______      , LSFT(KC_L) , LSFT(KC_U)    , LCTL(KC_BSLS),  _______ ,_______, _______   , LCTL(KC_D) , MC_PREV_BUFFER , MC_NEXT_BUFFER, _______    , _______, KC_ENT,
-    _______, _______      , _______      , MC_CPR     , MC_DELETE_WORD, MC_MAXIMIZER ,  _______ ,_______, _______   , MC_SAVE    , MC_VISTA       , MC_PREV_TAB   , MC_NEXT_TAB, _______, KC_RSFT,
+    KC_ESC , _______      , _______      , MC_PREV_BUFFER, MC_NEXT_BUFFER, LCTL(KC_BSLS),  _______ ,_______, _______   , LCTL(KC_D) , _______ , _______, _______    , _______, KC_ENT,
+    _______, _______      , _______      , MC_CPR     , MC_DELETE_WORD, MC_MAXIMIZER ,  _______ ,_______, _______   , MC_SAVE    , MC_VISTA       , _______       , _______    , _______, KC_RSFT,
     _______, _______      , _______      , _______    , _______       , _______      ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______,_______
   ),
 
   [MAINTENCE] = LAYOUT_ortho_5x15(
-    KC_GRV , QK_BOOT, RGB_VAD , RGB_VAI , RGB_RMOD , _______ ,  _______ ,_______, _______   , _______, _______, _______, _______, _______, KC_BSPC,
+    KC_GRV , QK_BOOT, _______ , _______ , _______ , _______ ,  _______ ,_______, _______   , _______, _______, _______, _______, _______, KC_BSPC,
     KC_TAB , EXIT   , RGB_VAD , RGB_VAI , RGB_MOD  , _______ ,  _______ ,_______, _______   , KC_WH_U, _______, _______, _______, _______, KC_DEL,
     KC_ESC , _______, RGB_HUD , RGB_HUI , _______  , DF(GAMER),  _______ ,_______, _______  , KC_WH_D, _______, _______, _______, _______, KC_ENT,
     KC_LSFT, _______, RGB_SAD , RGB_SAI , _______  , DF(BASE),  _______ ,_______, _______   , _______, _______, _______, _______, _______, KC_RSFT,
