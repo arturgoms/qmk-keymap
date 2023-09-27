@@ -2,8 +2,7 @@
 
 ![IDOBAO](doc/image.JPG)
 
-Highly inspired by: [getreuer](https://getreuer.info/posts/keyboards/tour/index.html)  Artur's QMK keymap
-
+Highly inspired by: [getreuer](https://getreuer.info/posts/keyboards/tour/index.html)
 ## My keymap
 
 ![IDOBAO](doc/idobao.png)
