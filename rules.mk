@@ -14,7 +14,6 @@
 
 SRC += features/achordion.c
 SRC += features/custom_shift_keys.c
-SRC += features/repeat_key.c
 SRC += features/select_word.c
 SRC += features/sentence_case.c
 
@@ -39,6 +38,7 @@ MIDI_ENABLE = no           # MIDI controls
 AUDIO_ENABLE = no          # Audio output on port C6
 BLUETOOTH_ENABLE = no      # Enable Bluetooth with the Adafruit EZ-Key HID
 RGBLIGHT_ENABLE = no       # Enable WS2812 RGB underlight.
+REPEAT_KEY_ENABLE = yes
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 AUTOCORRECT_ENABLE = yes

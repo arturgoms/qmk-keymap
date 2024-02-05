@@ -23,7 +23,7 @@
 #include "select_word.h"
 
 // Mac users, uncomment this line:
-// #define MAC_HOTKEYS
+#define MAC_HOTKEYS
 
 // clang-format off
 enum {
