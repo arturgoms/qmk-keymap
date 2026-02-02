@@ -15,7 +15,7 @@
 SRC += features/achordion.c
 SRC += features/custom_shift_keys.c
 SRC += features/select_word.c
-SRC += features/sentence_case.c
+# SRC += features/sentence_case.c
 
 
 # Bootloader selection

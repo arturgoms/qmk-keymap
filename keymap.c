@@ -44,91 +44,91 @@
 #include "features/achordion.h"
 #include "features/custom_shift_keys.h"
 #include "features/select_word.h"
-#include "features/sentence_case.h"
+// #include "features/sentence_case.h"
 #include "layout.h"
 #include "quantum.h"
 
 enum layers {
-    BASE,
-    LOWER,
-    RAISE,
-    MAINTENCE,
-    TMUX,
-		GAMER
+  BASE,
+  LOWER,
+  RAISE,
+  MAINTENCE,
+  TMUX,
+  GAMER,
+  BASE_PLUS,
 };
 
 enum custom_keycodes {
-    UPDIR = SAFE_RANGE,
-    EXIT,
-    SCOPE,
-    SELWORD,
-    TMUXESC,
-    SRCHSEL,
-    USRNAME,
-    DASH,
-    ARROW,
-    THMBUP,
-    REPEAT,
-    ALTREP,
-    MC_COMMENT,
-    MC_CPR,
-    MC_SAVE,
-    MC_DELETE_WORD,
-    MC_QUIT,
-    MC_VISTA,
-    MC_NEXT_TAB,
-    MC_PREV_TAB,
-    MC_BUFFERS,
-    MC_MAXIMIZER,
-		MC_HARPOON_UI,
-		MC_HARPOON_MARK,
-    MC_TMUX_PREV,
-    MC_TMUX_NEXT,
-    MC_TMUX_SPLIT_H,
-    MC_TMUX_SPLIT_V,
-    MC_TMUX_RELOAD,
-    MC_TMUX_RENAME,
-    MC_TMUX_SWITCH_UP,
-    MC_TMUX_SWITCH_DOWN,
-    MC_TMUX_SWITCH_LEFT,
-    MC_TMUX_SWITCH_RIGHT,
-    MC_TMUX_KILL_SESSION,
-    MC_TMUX_KILL_PANE,
-    MC_TMUX_NEW,
-    MC_TMUX_INSTALL,
-    MC_TMUX_DETACH,
-    MC_TMUX_SAVE,
-    MC_TMUX_RESTORE,
-    MC_NEXT_BUFFER,
-    MC_PREV_BUFFER,
-    MC_TMUX_CHSH,
-    MC_TMUX_SESSIONIZER,
-    MC_TMUX_SESSIONS,
-    MC_SHIFT_CAPS,
-	  M_ION,
-		M_NION,
-		M_MENT,
-		M_QUEN,
-		M_TMENT,
-		M_THE,
-		M_UPDIR,
-		M_INCLUDE,
-		M_DOCSTR,
-		M_MKGRVS,
-		M_EQEQ,
-		MC_HARPOON_PREV,
-		MC_HARPOON_NEXT,
-		MC_HARPOON_GOTO_1,
-		MC_HARPOON_GOTO_2,
-		MC_HARPOON_GOTO_3,
-		MC_HARPOON_GOTO_4,
-		MC_HARPOON_GOTO_5,
+  UPDIR = SAFE_RANGE,
+  EXIT,
+  SCOPE,
+  SELWORD,
+  TMUXESC,
+  SRCHSEL,
+  USRNAME,
+  DASH,
+  ARROW,
+  THMBUP,
+  REPEAT,
+  ALTREP,
+  MC_COMMENT,
+  MC_CPR,
+  MC_SAVE,
+  MC_DELETE_WORD,
+  MC_QUIT,
+  MC_VISTA,
+  MC_NEXT_TAB,
+  MC_PREV_TAB,
+  MC_BUFFERS,
+  MC_MAXIMIZER,
+  MC_HARPOON_UI,
+  MC_HARPOON_MARK,
+  MC_TMUX_PREV,
+  MC_TMUX_NEXT,
+  MC_TMUX_SPLIT_H,
+  MC_TMUX_SPLIT_V,
+  MC_TMUX_RELOAD,
+  MC_TMUX_RENAME,
+  MC_TMUX_SWITCH_UP,
+  MC_TMUX_SWITCH_DOWN,
+  MC_TMUX_SWITCH_LEFT,
+  MC_TMUX_SWITCH_RIGHT,
+  MC_TMUX_KILL_SESSION,
+  MC_TMUX_KILL_PANE,
+  MC_TMUX_NEW,
+  MC_TMUX_INSTALL,
+  MC_TMUX_DETACH,
+  MC_TMUX_SAVE,
+  MC_TMUX_RESTORE,
+  MC_NEXT_BUFFER,
+  MC_PREV_BUFFER,
+  MC_TMUX_CHSH,
+  MC_TMUX_SESSIONIZER,
+  MC_TMUX_SESSIONS,
+  MC_SHIFT_CAPS,
+  M_ION,
+  M_NION,
+  M_MENT,
+  M_QUEN,
+  M_TMENT,
+  M_THE,
+  M_UPDIR,
+  M_INCLUDE,
+  M_DOCSTR,
+  M_MKGRVS,
+  M_EQEQ,
+  MC_HARPOON_PREV,
+  MC_HARPOON_NEXT,
+  MC_HARPOON_GOTO_1,
+  MC_HARPOON_GOTO_2,
+  MC_HARPOON_GOTO_3,
+  MC_HARPOON_GOTO_4,
+  MC_HARPOON_GOTO_5,
 };
 
-enum tap_dance{
-    TD_SHIFT_CAPS,
+enum tap_dance {
+  TD_SHIFT_CAPS,
 };
-
 
 // This keymap uses Ikcelaks' Magic Sturdy layout for the base layer (see
 // https://github.com/Ikcelaks/keyboard_layouts). I've also made some twists of
@@ -182,8 +182,6 @@ enum tap_dance{
 // |  Gui  |  Alt  | Shift | Ctrl  |   | Ctrl  | Shift |  Alt  |  Gui  |
 // +-------+-------+-------+-------+   +-------+-------+-------+-------+
 
-
-// Home row mods for Magic Sturdy layer.
 #define HOME_A LGUI_T(KC_A)
 #define HOME_R LALT_T(KC_R)
 #define HOME_S LSFT_T(KC_S)
@@ -194,15 +192,14 @@ enum tap_dance{
 #define HOME_I LALT_T(KC_I)
 #define HOME_O RGUI_T(KC_O)
 
-
-#define LR_TMUX  LT(TMUX, KC_TAB)
+#define LR_TMUX LT(TMUX, KC_TAB)
 #define LR_RAISE LT(RAISE, KC_BSPC)
 #define LR_LOWER LT(LOWER, KC_SPC)
-#define LR_MAIN  LT(MAINTENCE, QK_REP)
-#define LR_MAIN  LT(MAINTENCE, QK_REP)
+#define LR_MAIN LT(MAINTENCE, QK_REP)
+#define LR_MAIN LT(MAINTENCE, QK_REP)
 
 /* #define MOD_SFEN  OSM(MOD_LSFT) */
-#define MOD_CTEN  OSM(MOD_LCTL)
+#define MOD_CTEN OSM(MOD_LCTL)
 
 #define KC_PPM KC_MEDIA_PLAY_PAUSE
 
@@ -212,16 +209,15 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_SHIFT_CAPS] = ACTION_TAP_DANCE_DOUBLE(MOD_LSFT, KC_CAPS),
 };
 
-
 // clang-format off
 const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
   [BASE] = LAYOUT_ortho_5x15(
 		// Base layer: Colemak with home row mods.
-		KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
-		KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
+	  KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
+	  KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
 	  KC_ESC , HOME_A , HOME_R , HOME_S , HOME_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
 		_______, KC_Z   , KC_X   , KC_C   , KC_D   , KC_V    , _______ ,_______, _______ , KC_K    , KC_H   , KC_COMM, KC_DOT , KC_SLSH   , _______,
-		_______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN  ,_______, QK_AREP, LR_LOWER, LR_MAIN, DF(GAMER), CW_TOGG, _______   , _______
+		_______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN  ,_______, QK_AREP, LR_LOWER, LR_MAIN, DF(GAMER), DF(BASE_PLUS), _______   , _______
   ),
 
   [LOWER] = LAYOUT_ortho_5x15(
@@ -234,8 +230,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
 
   [RAISE] = LAYOUT_ortho_5x15(
     KC_GRV , MC_HARPOON_GOTO_1 , MC_HARPOON_GOTO_2 ,MC_HARPOON_GOTO_3,MC_HARPOON_GOTO_4 , MC_HARPOON_GOTO_5 ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______, KC_BSPC,
-    KC_TAB , MC_QUIT, MC_HARPOON_MARK, LCTL(KC_H) , LCTL(KC_L)    , MC_HARPOON_UI,  _______ ,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
-    KC_ESC , _______, _______, MC_PREV_BUFFER     , MC_NEXT_BUFFER, LCTL(KC_T)   ,  _______ ,_______, _______   , LCTL(KC_D) , MC_HARPOON_PREV , MC_HARPOON_NEXT, _______    , _______, KC_ENT,
+    KC_TAB , MC_QUIT, MC_HARPOON_MARK, MC_PREV_BUFFER , MC_NEXT_BUFFER    , MC_HARPOON_UI,  _______ ,_______, _______   , LCTL(KC_U) , KC_HOME        , KC_END        , _______    , _______, KC_DEL,
+    KC_ESC , _______, _______, MC_DOWN_BUFFER     , MC_UP_BUFFER, LCTL(KC_T)   ,  _______ ,_______, _______   , LCTL(KC_D) , MC_HARPOON_PREV , MC_HARPOON_NEXT, _______    , _______, KC_ENT,
     _______, _______, _______, MC_CPR             , MC_DELETE_WORD, MC_MAXIMIZER ,  _______ ,_______, _______   , MC_SAVE    , MC_VISTA       , _______       , _______    , _______, KC_RSFT,
     _______, _______, _______, _______            , _______       , _______      ,  _______ ,_______, _______   , _______    , _______        , _______       , _______    , _______,_______
   ),
@@ -260,7 +256,15 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] PROGMEM = {
     KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   ,  _______ ,_______, _______ , KC_Y    , KC_U   , KC_I   , KC_O   , KC_P    , KC_DEL,
     KC_ESC , KC_A   , KC_S   , KC_D   , KC_F   , KC_G   ,  _______ ,_______, _______ , KC_H    , KC_J   , KC_K   , KC_L   , KC_SCLN , KC_ENT,
     _______, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   ,  _______ ,_______, _______ , KC_N    , KC_M   , KC_COMM, KC_DOT , KC_SLSH , _______,
-    _______, _______, KC_LALT, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, QK_AREP, LR_LOWER, LR_MAIN, KC_RGUI, DF(BASE), _______ , _______
+    _______, _______, KC_LALT, KC_SPC , KC_LCTL, LR_RAISE, MOD_CTEN,_______, QK_AREP, LR_LOWER, LR_MAIN, DF(BASE_PLUS), DF(BASE), _______ , _______
+  ),
+  [BASE_PLUS] = LAYOUT_ortho_5x15(
+	      // Base layer: Colemak with home row mods.
+	KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5    , _______ ,_______, _______ , KC_6    , KC_7   , KC_8   , KC_9   , KC_0      , KC_BSPC,
+	KC_TAB , KC_Q   , KC_W   , KC_F   , KC_P   , KC_B    , _______ ,_______, _______ , KC_J    , KC_L   , KC_U   , KC_Y   , KC_QUOT   , KC_DEL,
+	KC_ESC , KC_A   , KC_R   , KC_S   , KC_T , KC_G    , _______ ,_______, _______ , KC_M    , HOME_N , HOME_E , HOME_I , HOME_O    , KC_ENT,
+	      _______, KC_Z   , KC_X   , KC_C   , KC_D   , KC_V    , _______ ,_______, _______ , KC_K    , KC_H   , KC_COMM, KC_DOT , KC_SLSH   , _______,
+	      _______,_______ , KC_LALT, KC_LGUI, LR_TMUX, LR_RAISE, MOD_CTEN  ,_______, QK_AREP, LR_LOWER, LR_MAIN, DF(GAMER), DF(BASE), _______   , _______
   ),
 };
 // clang-format on
@@ -308,8 +312,8 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
 }
 
 #ifdef AUTOCORRECT_ENABLE
-bool apply_autocorrect(uint8_t backspaces, const char* str,
-                       char* typo, char* correct) {
+bool apply_autocorrect(uint8_t backspaces, const char* str, char* typo,
+                       char* correct) {
   for (uint8_t i = 0; i < backspaces; ++i) {
     tap_code(KC_BSPC);
   }
@@ -349,14 +353,14 @@ bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
   // Exceptionally consider the following chords as holds, even though they
   // are on the same hand in Magic Sturdy.
   switch (tap_hold_keycode) {
-		case LR_LOWER:
-			return true;
-		case LR_RAISE:
-			return true;
-		case LR_MAIN:
-			return true;
-		case LR_TMUX:
-			return true;
+    case LR_LOWER:
+      return true;
+    case LR_RAISE:
+      return true;
+    case LR_MAIN:
+      return true;
+    case LR_TMUX:
+      return true;
   }
 
   // Also allow same-hand holds when the other key is in the rows below the
@@ -373,41 +377,41 @@ uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
   return 800;  // Use a timeout of 800 ms.
 }
 
-char sentence_case_press_user(uint16_t keycode, keyrecord_t* record,
-                              uint8_t mods) {
-  if ((mods & ~(MOD_MASK_SHIFT | MOD_BIT(KC_RALT))) == 0) {
-    const bool shifted = mods & MOD_MASK_SHIFT;
-    switch (keycode) {
-      case KC_LCTL ... KC_RGUI:  // Mod keys.
-        return '\0';  // These keys are ignored.
-
-      case KC_A ... KC_Z:
-        return 'a';  // Letter key.
-
-      case KC_DOT:  // Both . and Shift . (?) punctuate sentence endings.
-        return '.';
-      case KC_COMM:  // Shift , (!) is a sentence ending.
-        return shifted ? '.' : '#';
-
-      case KC_1 ... KC_0:  // 1 2 3 4 5 6 7 8 9 0
-      case KC_MINS ... KC_SCLN:  // - = [ ] ; ` backslash
-      case KC_GRV:
-      case KC_SLSH:
-        return '#';  // Symbol key.
-
-      case KC_SPC:
-        return ' ';  // Space key.
-
-      case KC_QUOT:
-        return '\'';  // Quote key.
-    }
-  }
-
-  // Otherwise clear Sentence Case to initial state.
-  sentence_case_clear();
-  return '\0';
-}
-
+// char sentence_case_press_user(uint16_t keycode, keyrecord_t* record,
+//                               uint8_t mods) {
+//   if ((mods & ~(MOD_MASK_SHIFT | MOD_BIT(KC_RALT))) == 0) {
+//     const bool shifted = mods & MOD_MASK_SHIFT;
+//     switch (keycode) {
+//       case KC_LCTL ... KC_RGUI:  // Mod keys.
+//         return '\0';  // These keys are ignored.
+//
+//       case KC_A ... KC_Z:
+//         return 'a';  // Letter key.
+//
+//       case KC_DOT:  // Both . and Shift . (?) punctuate sentence endings.
+//         return '.';
+//       case KC_COMM:  // Shift , (!) is a sentence ending.
+//         return shifted ? '.' : '#';
+//
+//       case KC_1 ... KC_0:  // 1 2 3 4 5 6 7 8 9 0
+//       case KC_MINS ... KC_SCLN:  // - = [ ] ; ` backslash
+//       case KC_GRV:
+//       case KC_SLSH:
+//         return '#';  // Symbol key.
+//
+//       case KC_SPC:
+//         return ' ';  // Space key.
+//
+//       case KC_QUOT:
+//         return '\'';  // Quote key.
+//     }
+//   }
+//
+//   // Otherwise clear Sentence Case to initial state.
+//   sentence_case_clear();
+//   return '\0';
+// }
+//
 // clang-format off
 uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
   if ((mods & ~MOD_MASK_SHIFT) == 0) {
@@ -519,15 +523,15 @@ static void magic_send_string_P(const char* str, uint16_t repeat_keycode) {
 }
 
 typedef enum {
-    PROCESS_RECORD_RETURN_TRUE,
-    PROCESS_RECORD_RETURN_FALSE,
-    PROCESS_RECORD_CONTINUE
+  PROCESS_RECORD_RETURN_TRUE,
+  PROCESS_RECORD_RETURN_FALSE,
+  PROCESS_RECORD_CONTINUE
 } process_record_result_t;
 
 // clang-format off
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   if (!process_achordion(keycode, record)) { return false; }
-  if (!process_sentence_case(keycode, record)) { return false; }
+  // if (!process_sentence_case(keycode, record)) { return false; }
   if (!process_select_word(keycode, record, SELWORD)) { return false; }
   if (!process_custom_shift_keys(keycode, record)) { return false; }
 
@@ -683,26 +687,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
         case MC_HARPOON_UI:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").toggle_quick_menu()");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon.ui:toggle_quick_menu(harpoon:list())");
             tap_code(KC_ENT);
             return PROCESS_RECORD_RETURN_FALSE;
 
         case MC_HARPOON_MARK:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.mark\").add_file()");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():append()");
             tap_code(KC_ENT);
             return PROCESS_RECORD_RETURN_FALSE;
 
-        case MC_NEXT_BUFFER:
+        // Buffer navigation
+        case MC_LEFT_BUFFER:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":bnext");
-            tap_code(KC_ENT);
+            tap_code(KC_LGUI);
+            tap_code(KC_LALT);
+            tap_code(KC_LEFT);
             return PROCESS_RECORD_RETURN_FALSE;
 
-        case MC_PREV_BUFFER:
+        case MC_RIGHT_BUFFER:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":bprevious");
-            tap_code(KC_ENT);
+            tap_code(KC_LGUI);
+            tap_code(KC_LALT);
+            tap_code(KC_RIGHT);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_UP_BUFFER:
+            tap_code(KC_ESCAPE);
+            tap_code(KC_LGUI);
+            tap_code(KC_LALT);
+            tap_code(KC_UP);
+            return PROCESS_RECORD_RETURN_FALSE;
+
+        case MC_DOWN_BUFFER:
+            tap_code(KC_ESCAPE);
+            tap_code(KC_LGUI);
+            tap_code(KC_LALT);
+            tap_code(KC_DOWN);
             return PROCESS_RECORD_RETURN_FALSE;
 
         // Tmux
@@ -810,43 +831,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 				// Harpoon
 				case MC_HARPOON_NEXT:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_next()");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():next()");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_PREV:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_prev()");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():prev()");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_GOTO_1:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_file(1)");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(1)");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_GOTO_2:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_file(2)");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(2)");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_GOTO_3:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_file(3)");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(3)");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_GOTO_4:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_file(4)");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(4)");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
 
 				case MC_HARPOON_GOTO_5:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua require(\" harpoon.ui\").nav_file(5)");
+            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(5)");
             tap_code(KC_ENT);
           return PROCESS_RECORD_RETURN_FALSE;
     }
@@ -858,7 +879,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 void matrix_scan_user(void) {
   achordion_task();
   select_word_task();
-  sentence_case_task();
+  // sentence_case_task();
 }
 
 // RGB Matrix
@@ -868,14 +889,13 @@ int leds[] = {
      38, 37, 36, 35, 34, /*    */ 30, 29, 28, 27, 26,
 };
 
-int layer_gamer_led[] = {12,};
-int layer_base_led[] = {13,};
 const int led_count = 30;
 
 void set_rgblight_by_layer(uint32_t layer) {
      switch (layer) {
           case BASE:
 	       rgb_matrix_set_color(13, RGB_RED);
+	       rgb_matrix_set_color(12, RGB_BLUE);
                break;
           case LOWER:
                for (int i = 0; i < led_count; i++) {
@@ -902,7 +922,13 @@ void set_rgblight_by_layer(uint32_t layer) {
                }
                break;
 	  case GAMER:
+	       rgb_matrix_set_color(13, RGB_BLUE);
 	       rgb_matrix_set_color(12, RGB_GREEN);
+	       break;
+	  case BASE_PLUS:
+	       rgb_matrix_set_color(13, RGB_RED);
+	       rgb_matrix_set_color(12, RGB_GREEN);
+      	       break;
           default:
                break;
      }
