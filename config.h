@@ -32,6 +32,7 @@
 // https://docs.qmk.fm/#/feature_split_keyboard?id=data-sync-options
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_MODS_ENABLE
+#define SPLIT_ACTIVITY_ENABLE
 
 // Tap-hold configuration for home row mods.
 #define TAPPING_TERM 180
