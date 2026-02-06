@@ -1,4 +1,4 @@
-// Copyright 2022 Google LLC
+// Copyright 2022-2025 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -70,8 +70,8 @@ bool process_sentence_case(uint16_t keycode, keyrecord_t* record);
  * Matrix task function for Sentence Case.
  *
  * If using `SENTENCE_CASE_TIMEOUT`, call this function from your
- * `matrix_scan_user()` function in keymap.c. (If no timeout is set, calling
- * `sentence_case_task()` has no effect.)
+ * `housekeeping_task_user()` function in keymap.c. (If no timeout is set,
+ * calling `sentence_case_task()` has no effect.)
  */
 #if SENTENCE_CASE_TIMEOUT > 0
 void sentence_case_task(void);
@@ -83,6 +83,7 @@ void sentence_case_on(void); /**< Enables Sentence Case. */
 void sentence_case_off(void); /**< Disables Sentence Case. */
 void sentence_case_toggle(void); /**< Toggles Sentence Case. */
 bool is_sentence_case_on(void); /**< Gets whether currently enabled. */
+bool is_sentence_case_primed(void); /**< Whether currently primed. */
 void sentence_case_clear(void); /**< Clears Sentence Case to initial state. */
 
 /**
@@ -157,7 +158,7 @@ bool sentence_case_just_typed_P(const uint16_t* buffer, const uint16_t* pattern,
  *   '.'  Key is sentence-ending punctuation. Default: . ? !
  *
  *   '#'  Key types a backspaceable character that isn't part of a word.
- *        Default: - = [ ] ; ' ` , < > / digits backslash
+ *        Default includes - = [ ] ; ' , < > / _ + @ # $ % ^ & * ( ) { } digits
  *
  *   ' '  Key is a space. Default: KC_SPC
  *
@@ -177,9 +178,6 @@ bool sentence_case_just_typed_P(const uint16_t* buffer, const uint16_t* pattern,
  *       if ((mods & ~(MOD_MASK_SHIFT | MOD_BIT(KC_RALT))) == 0) {
  *         const bool shifted = mods & MOD_MASK_SHIFT;
  *         switch (keycode) {
- *           case KC_LCTL ... KC_RGUI:  // Mod keys.
- *             return '\0';  // These keys are ignored.
- *
  *           case KC_A ... KC_Z:
  *             return 'a';  // Letter key.
  *
@@ -188,8 +186,13 @@ bool sentence_case_just_typed_P(const uint16_t* buffer, const uint16_t* pattern,
  *           case KC_1:
  *           case KC_SLSH:
  *             return shifted ? '.' : '#';
+ *           case KC_EXLM:
+ *           case KC_QUES:
+ *             return '.';
  *           case KC_2 ... KC_0:  // 2 3 4 5 6 7 8 9 0
- *           case KC_MINS ... KC_SCLN:  // - = [ ] ; backslash
+ *           case KC_AT ... KC_RPRN:  // @ # $ % ^ & * ( )
+ *           case KC_MINS ... KC_SCLN:  // - = [ ] backslash ;
+ *           case KC_UNDS ... KC_COLN:  // _ + { } | :
  *           case KC_GRV:
  *           case KC_COMM:
  *             return '#';  // Symbol key.

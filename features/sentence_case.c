@@ -1,4 +1,4 @@
-// Copyright 2022-2023 Google LLC
+// Copyright 2022-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,14 +62,14 @@ static uint8_t sentence_state = STATE_INIT;
 
 // Sets the current state to `new_state`.
 static void set_sentence_state(uint8_t new_state) {
-#ifndef NO_DEBUG
+#if !defined(NO_DEBUG) && defined(SENTENCE_CASE_DEBUG)
   if (debug_enable && sentence_state != new_state) {
     static const char* state_names[] = {
         "INIT", "WORD", "ABBREV", "ENDING", "PRIMED", "DISABLED",
     };
     dprintf("Sentence case: %s\n", state_names[new_state]);
   }
-#endif  // NO_DEBUG
+#endif  // !NO_DEBUG && SENTENCE_CASE_DEBUG
 
   const bool primed = (new_state == STATE_PRIMED);
   if (primed != (sentence_state == STATE_PRIMED)) {
@@ -118,6 +118,7 @@ void sentence_case_toggle(void) {
 }
 
 bool is_sentence_case_on(void) { return sentence_state != STATE_DISABLED; }
+bool is_sentence_case_primed(void) { return sentence_state == STATE_PRIMED; }
 
 #if SENTENCE_CASE_TIMEOUT > 0
 #if SENTENCE_CASE_TIMEOUT < 100 || SENTENCE_CASE_TIMEOUT > 30000
@@ -144,6 +145,20 @@ bool process_sentence_case(uint16_t keycode, keyrecord_t* record) {
 #endif  // SENTENCE_CASE_TIMEOUT > 0
 
   switch (keycode) {
+    case KC_LCTL ... KC_RGUI:  // Ignore mod keys.
+    case QK_ONE_SHOT_MOD ... QK_ONE_SHOT_MOD_MAX:  // Ignore one-shot mod.
+    // Ignore MO, TO, TG, TT, OSL, TL layer switch keys.
+    case QK_MOMENTARY ... QK_MOMENTARY_MAX:
+    case QK_TO ... QK_TO_MAX:
+    case QK_TOGGLE_LAYER ... QK_TOGGLE_LAYER_MAX:
+    case QK_LAYER_TAP_TOGGLE ... QK_LAYER_TAP_TOGGLE_MAX:
+    case QK_ONE_SHOT_LAYER ... QK_ONE_SHOT_LAYER_MAX:  // Ignore one-shot layer.
+#ifdef TRI_LAYER_ENABLE  // Ignore Tri Layer keys.
+    case QK_TRI_LAYER_LOWER:
+    case QK_TRI_LAYER_UPPER:
+#endif  // TRI_LAYER_ENABLE
+      return true;
+
 #ifndef NO_ACTION_TAPPING
     case QK_MOD_TAP ... QK_MOD_TAP_MAX:
       if (record->tap.count == 0) {
@@ -153,12 +168,12 @@ bool process_sentence_case(uint16_t keycode, keyrecord_t* record) {
       break;
 #ifndef NO_ACTION_LAYER
     case QK_LAYER_TAP ... QK_LAYER_TAP_MAX:
-#endif  // NO_ACTION_LAYER
       if (record->tap.count == 0) {
         return true;
       }
       keycode = QK_LAYER_TAP_GET_TAP_KEYCODE(keycode);
       break;
+#endif  // NO_ACTION_LAYER
 #endif  // NO_ACTION_TAPPING
 
 #ifdef SWAP_HANDS_ENABLE
@@ -200,7 +215,9 @@ bool process_sentence_case(uint16_t keycode, keyrecord_t* record) {
   //   ENDING  | ABBREV    INIT     PRIMED   ENDING
   //   PRIMED  | match!    INIT     PRIMED   PRIMED
   char code = sentence_case_press_user(keycode, record, mods);
+#if defined SENTENCE_CASE_DEBUG
   dprintf("Sentence Case: code = '%c' (%d)\n", code, (int)code);
+#endif  // SENTENCE_CASE_DEBUG
   switch (code) {
     case '\0':  // Current key should be ignored.
       return true;
@@ -269,7 +286,9 @@ bool process_sentence_case(uint16_t keycode, keyrecord_t* record) {
 #if SENTENCE_CASE_BUFFER_SIZE > 1
   key_buffer[SENTENCE_CASE_BUFFER_SIZE - 1] = keycode;
   if (new_state == STATE_ENDING && !sentence_case_check_ending(key_buffer)) {
+#if defined SENTENCE_CASE_DEBUG
     dprintf("Not a real ending.\n");
+#endif  // SENTENCE_CASE_DEBUG
     new_state = STATE_INIT;
   }
 #endif  // SENTENCE_CASE_BUFFER_SIZE > 1
@@ -311,9 +330,6 @@ __attribute__((weak)) char sentence_case_press_user(uint16_t keycode,
   if ((mods & ~(MOD_MASK_SHIFT | MOD_BIT(KC_RALT))) == 0) {
     const bool shifted = mods & MOD_MASK_SHIFT;
     switch (keycode) {
-      case KC_LCTL ... KC_RGUI:  // Mod keys.
-        return '\0';  // These keys are ignored.
-
       case KC_A ... KC_Z:
         return 'a';  // Letter key.
 
@@ -322,8 +338,13 @@ __attribute__((weak)) char sentence_case_press_user(uint16_t keycode,
       case KC_1:
       case KC_SLSH:
         return shifted ? '.' : '#';
+      case KC_EXLM:
+      case KC_QUES:
+        return '.';
       case KC_2 ... KC_0:  // 2 3 4 5 6 7 8 9 0
-      case KC_MINS ... KC_SCLN:  // - = [ ] ; backslash
+      case KC_AT ... KC_RPRN:  // @ # $ % ^ & * ( )
+      case KC_MINS ... KC_SCLN:  // - = [ ] backslash ;
+      case KC_UNDS ... KC_COLN:  // _ + { } | :
       case KC_GRV:
       case KC_COMM:
         return '#';  // Symbol key.

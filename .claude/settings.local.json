@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo clone:*)",
+      "WebFetch(domain:getreuer.info)",
+      "Bash(gh api:*)",
+      "Bash(GETREUER=\"/private/tmp/claude-501/-Users-arturgomes-projects-personal-qmk-keymap/58dad9a0-40e2-41c8-aba4-9ec1b76ee717/scratchpad/getreuer-qmk-keymap/features\")",
+      "Bash(DEST=\"/Users/arturgomes/projects/personal/qmk-keymap/features\")",
+      "Bash(for f in achordion.c achordion.h select_word.c select_word.h custom_shift_keys.c custom_shift_keys.h sentence_case.c sentence_case.h mouse_turbo_click.c mouse_turbo_click.h orbital_mouse.c orbital_mouse.h socd_cleaner.c socd_cleaner.h palettefx.h palettefx.inc autocorrection_data.h)",
+      "Bash(do cp \"$GETREUER/$f\" \"$DEST/$f\")",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(qmk:*)",
+      "Bash(pip3 show:*)",
+      "Bash(python3:*)",
+      "Bash(/opt/homebrew/bin/qmk:*)",
+      "Bash(/opt/homebrew/Cellar/qmk/1.1.8/libexec/bin/python -m pip install:*)",
+      "Bash(git stash:*)",
+      "Bash(git pull:*)",
+      "Bash(make:*)",
+      "Bash(rsync:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-// Copyright 2021-2023 Google LLC
+// Copyright 2021-2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,12 @@
 
 #include "custom_shift_keys.h"
 
+#if !defined(IS_QK_MOD_TAP)
+// Attempt to detect out-of-date QMK installation, which would fail with
+// implicit-function-declaration errors in the code below.
+#error "custom_shift_keys: QMK version is too old to build. Please update QMK."
+#else
+
 bool process_custom_shift_keys(uint16_t keycode, keyrecord_t *record) {
   static uint16_t registered_keycode = KC_NO;
 
@@ -34,12 +40,25 @@ bool process_custom_shift_keys(uint16_t keycode, keyrecord_t *record) {
   }
 
   if (record->event.pressed) {  // Press event.
-    const uint8_t mods = get_mods();
+    const uint8_t saved_mods = get_mods();
 #ifndef NO_ACTION_ONESHOT
-    if ((mods | get_weak_mods() | get_oneshot_mods()) & MOD_MASK_SHIFT) {
+    const uint8_t mods = saved_mods | get_weak_mods() | get_oneshot_mods();
 #else
-    if ((mods | get_weak_mods()) & MOD_MASK_SHIFT) {  // Shift is held.
+    const uint8_t mods = saved_mods | get_weak_mods();
 #endif  // NO_ACTION_ONESHOT
+#if CUSTOM_SHIFT_KEYS_LAYER_MASK != 0
+    const uint8_t layer = read_source_layers_cache(record->event.key);
+#endif  // CUSTOM_SHIFT_KEYS_LAYER_MASK
+    if ((mods & MOD_MASK_SHIFT) != 0  // Shift is held.
+#if CUSTOM_SHIFT_KEYS_NEGMODS != 0
+        // Nothing in CUSTOM_SHIFT_KEYS_NEGMODS is held.
+        && (mods & (CUSTOM_SHIFT_KEYS_NEGMODS)) == 0
+#endif  // CUSTOM_SHIFT_KEYS_NEGMODS != 0
+#if CUSTOM_SHIFT_KEYS_LAYER_MASK != 0
+        // Pressed key is on a layer appearing in the layer mask.
+        && ((1 << layer) & (CUSTOM_SHIFT_KEYS_LAYER_MASK)) != 0
+#endif  // CUSTOM_SHIFT_KEYS_LAYER_MASK
+          ) {
       // Continue default handling if this is a tap-hold key being held.
       if ((IS_QK_MOD_TAP(keycode) || IS_QK_LAYER_TAP(keycode)) &&
           record->tap.count == 0) {
@@ -61,7 +80,7 @@ bool process_custom_shift_keys(uint16_t keycode, keyrecord_t *record) {
 #endif  // NO_ACTION_ONESHOT
             unregister_mods(MOD_MASK_SHIFT);
             register_code16(registered_keycode);
-            set_mods(mods);
+            set_mods(saved_mods);
           }
           return false;
         }
@@ -71,3 +90,5 @@ bool process_custom_shift_keys(uint16_t keycode, keyrecord_t *record) {
 
   return true;  // Continue with default handling.
 }
+
+#endif  // version check

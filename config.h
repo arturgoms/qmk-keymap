@@ -1,106 +1,72 @@
-// Copyright 2021-2022 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
+/* Copyright 2023 Brian Low
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #pragma once
 
-#define USE_SERIAL
-#define MASTER_RIGHT
+// Enabling this option changes the startup behavior to listen for an
+// active USB communication to delegate which part is master and which
+// is slave. With this option enabled and theres's USB communication,
+// then that half assumes it is the master, otherwise it assumes it
+// is the slave.
+//
+// I've found this helps with some ProMicros where the slave does not boot
+#define SPLIT_USB_DETECT
+
+#define RGB_MATRIX_SLEEP     // turn off effects when suspended
+#define SPLIT_TRANSPORT_MIRROR             // If LED_MATRIX_KEYPRESSES or LED_MATRIX_KEYRELEASES is enabled, you also will want to enable SPLIT_TRANSPORT_MIRROR
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100  // limits maximum brightness of LEDs (max 255). Higher may cause the controller to crash.
+
+// RGB indicators on split keyboards will require state information synced to the slave half (e.g. #define SPLIT_LAYER_STATE_ENABLE). See data sync options for more details.
+// https://docs.qmk.fm/#/feature_split_keyboard?id=data-sync-options
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_MODS_ENABLE
 
 // Tap-hold configuration for home row mods.
 #define TAPPING_TERM 180
 #define PERMISSIVE_HOLD
-#define TAPPING_FORCE_HOLD_PER_KEY
 
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION
-
-#define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX
-
-// Use Left Ctrl + Right Ctrl to activate the Command feature.
-#define IS_COMMAND() (get_mods() == MOD_MASK_CTRL)
+// Caps Word
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
-
-// When idle, turn off Caps Word after 5 seconds.
 #define CAPS_WORD_IDLE_TIMEOUT 5000
+#define CAPS_WORD_INVERT_ON_SHIFT
 
-// When idle, turn off Select Word after 2 seconds.
+// Select Word
 #define SELECT_WORD_TIMEOUT 2000
 
-// When idle, turn off Sentence Case after 2 seconds.
+// Sentence Case
 #define SENTENCE_CASE_TIMEOUT 2000
 
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION
-#define NO_MUSIC_MODE
-#undef LOCKING_SUPPORT_ENABLE
-#undef LOCKING_RESYNC_ENABLE
+// Layer Lock
+#define LAYER_LOCK_IDLE_TIMEOUT 60000
 
-// Disable RGB effects
-#undef RGBLIGHT_ANIMATIONS
-#undef RGBLIGHT_LAYERS
-#undef RGBLIGHT_EFFECT_BREATHING
-#undef RGBLIGHT_EFFECT_RAINBOW_MOOD
-#undef RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#undef RGBLIGHT_EFFECT_SNAKE
-#undef RGBLIGHT_EFFECT_KNIGHT
-#undef RGBLIGHT_EFFECT_CHRISTMAS
-#undef RGBLIGHT_EFFECT_STATIC_GRADIENT
-#undef RGBLIGHT_EFFECT_RGB_TEST
-#undef RGBLIGHT_EFFECT_ALTERNATING
-#undef RGBLIGHT_EFFECT_TWINKLE
+// Custom Shift Keys
+#define CUSTOM_SHIFT_KEYS_NEGMODS ~MOD_MASK_SHIFT
 
-#undef ENABLE_RGB_MATRIX_ALPHAS_MODS
-#undef ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
-#undef ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
-#undef ENABLE_RGB_MATRIX_BREATHING
-#undef ENABLE_RGB_MATRIX_BAND_SAT
-#undef ENABLE_RGB_MATRIX_BAND_VAL
-#undef ENABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
-#undef ENABLE_RGB_MATRIX_BAND_PINWHEEL_VAL
-#undef ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
-#undef ENABLE_RGB_MATRIX_BAND_SPIRAL_VAL
-#undef ENABLE_RGB_MATRIX_CYCLE_ALL
-#undef ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
-#undef ENABLE_RGB_MATRIX_CYCLE_UP_DOWN
-#undef ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
-#undef ENABLE_RGB_MATRIX_CYCLE_OUT_IN
-#undef ENABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL
-#undef ENABLE_RGB_MATRIX_CYCLE_PINWHEEL
-#undef ENABLE_RGB_MATRIX_CYCLE_SPIRAL
-#undef ENABLE_RGB_MATRIX_DUAL_BEACON
-#undef ENABLE_RGB_MATRIX_RAINBOW_BEACON
-#undef ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
-#undef ENABLE_RGB_MATRIX_RAINDROPS
-#undef ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
-#undef ENABLE_RGB_MATRIX_HUE_BREATHING
-#undef ENABLE_RGB_MATRIX_HUE_PENDULUM
-#undef ENABLE_RGB_MATRIX_HUE_WAVE
-#undef ENABLE_RGB_MATRIX_PIXEL_FRACTAL
-#undef ENABLE_RGB_MATRIX_PIXEL_RAIN
+// Orbital Mouse
+#define ORBITAL_MOUSE_SPEED_CURVE \
+    {24, 24, 24, 32, 62, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72}
 
-#undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
-#undef ENABLE_RGB_MATRIX_DIGITAL_RAIN
+// Mouse Turbo Click - use new keycode name
+#define MOUSE_TURBO_CLICK_KEY MS_BTN1
 
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS
-#undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
-#undef ENABLE_RGB_MATRIX_SPLASH
-#undef ENABLE_RGB_MATRIX_MULTISPLASH
-#undef ENABLE_RGB_MATRIX_SOLID_SPLASH
-#undef ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
+// PaletteFx
+#define RGB_MATRIX_CUSTOM_USER
+#define PALETTEFX_ENABLE_ALL_EFFECTS
+#define PALETTEFX_ENABLE_ALL_PALETTES
+
+// TAP_CODE_DELAY for macros
+#ifndef TAP_CODE_DELAY
+#define TAP_CODE_DELAY 5
+#endif
