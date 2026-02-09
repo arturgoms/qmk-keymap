@@ -23,6 +23,7 @@
 #include "features/socd_cleaner.h"
 #include "features/mouse_turbo_click.h"
 #include "features/palettefx.h"
+#include "os_detection.h"
 #include "quantum.h"
 
 enum layers {
@@ -57,9 +58,7 @@ enum custom_keycodes {
     MC_NEXT_TAB,
     MC_PREV_TAB,
     MC_BUFFERS,
-    MC_MAXIMIZER,
     MC_SPLIT_HELPER,
-    MC_TAB_SWITCHER,
     MC_TMUX_PREV,
     MC_TMUX_NEXT,
     MC_TMUX_SPLIT_H,
@@ -77,12 +76,6 @@ enum custom_keycodes {
     MC_TMUX_DETACH,
     MC_TMUX_SAVE,
     MC_TMUX_RESTORE,
-    MC_PREV_BUFFER,
-    MC_NEXT_BUFFER,
-    MC_UP_BUFFER,
-    MC_DOWN_BUFFER,
-    MC_RIGHT_BUFFER,
-    MC_LEFT_BUFFER,
     MC_TMUX_CHSH,
     MC_TMUX_SESSIONIZER,
     MC_TMUX_SESSIONS,
@@ -105,6 +98,30 @@ enum custom_keycodes {
     MC_HARPOON_GOTO_3,
     MC_HARPOON_GOTO_4,
     MC_HARPOON_GOTO_5,
+    MC_HARPOON_ADD,
+    MC_HARPOON_MENU,
+    // Nvim macros (3+ keystroke sequences)
+    MC_FIND_FILES,
+    MC_GREP_TEXT,
+    MC_LSP_FORMAT,
+    MC_LSP_ACTION,
+    MC_LSP_RENAME,
+    MC_GIT_STAGE,
+    MC_GIT_BLAME,
+    // Tmux macros
+    MC_TMUX_ZOOM,
+    MC_TMUX_COPY_MODE,
+    MC_TMUX_LAST_WINDOW,
+    // Pane navigation (sends C-w then h/j/k/l)
+    MC_PANE_LEFT,
+    MC_PANE_DOWN,
+    MC_PANE_UP,
+    MC_PANE_RIGHT,
+    // OS-aware word navigation (Alt on macOS, Ctrl on Win/Linux)
+    OS_WORD_LEFT,
+    OS_WORD_RIGHT,
+    OS_DEL_WORD,
+    OS_DEL_WORD_FWD,
     TURBO,
 };
 
@@ -215,49 +232,49 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * LOWER - Symbols and Navigation
+     * LOWER - Symbols (left) + Navigation Cluster (right)
      * ,-----------------------------------------.                    ,-----------------------------------------.
-     * |  `   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  | Bspc |
+     * |  `   |   1  |   2  |   3  |   4  |   5  |                    |C-Left|C-Down| C-Up |C-Rght|   0  | Bspc |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Tab  | ::   |SELWRD|   ]  |   )  |   }  |                    |   "  |C-Left|C-Rght|   '  |      | Del  |
+     * | Tab  | ::   |SELWRD|   ]  |   )  |   }  |                    |A-Lft | Home |  End |A-Rgt | PgUp | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Esc  |      |   |  |   [  |   (  |   {  |-------.    ,-------|  Left| Down |  Up  | Right|      | Ent  |
+     * | Esc  |   =  |   |  |   [  |   (  |   {  |-------.    ,-------| Left | Down |  Up  | Right| PgDn | Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
-     * |LShift|      |   /  |   +  |   ;  |   -  |-------|    |-------|   _  |   :  |   =  |   \  |      |RShift|
+     * |LShift|   \  |   /  |   +  |   ;  |   -  |-------|    |-------|A-Bsp |   :  |   _  |A-Del |   /  |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
      *            |      |      |      |      |/       /       \      \ |      |      |      |      |
      *            |      |      |      |      |/       /         \      \ |      |      |      |      |
      *            `----------------------------------'           '------''---------------------------'
      */
     [LOWER] = LAYOUT(
-        KC_GRV,   KC_1,     KC_2,          KC_3,           KC_4,           KC_5,                             KC_6,             KC_7,            KC_8,          KC_9,      KC_0,        KC_BSPC,
-        KC_TAB,   SCOPE,    SELWORD,       KC_RBRC,        KC_RPRN,        LSFT(KC_RBRC),                    KC_DQUO,          LCTL(KC_LEFT),   LCTL(KC_RGHT), KC_QUOT,   _______,     KC_DEL,
-        KC_ESC,   _______,  KC_PIPE,       KC_LBRC,        KC_LPRN,        LSFT(KC_LBRC),                    KC_LEFT,          KC_DOWN,         KC_UP,         KC_RGHT,   _______,     KC_ENT,
-        KC_LSFT,  _______,  KC_SLSH,       LSFT(KC_EQL),   KC_SCLN,        KC_MINS,       _______,_______,  LSFT(KC_MINS),    KC_COLN,         KC_EQL,        KC_BSLS,   _______,     KC_RSFT,
-                                KC_LALT,  _______,        _______,        _______,       _______,_______,  _______,          _______,         _______, _______
+        KC_GRV,   KC_1,     KC_2,          KC_3,           KC_4,           KC_5,                                LCTL(KC_LEFT),    LCTL(KC_DOWN), LCTL(KC_UP), LCTL(KC_RGHT), KC_0,      KC_BSPC,
+        KC_TAB,   SCOPE,    SELWORD,       KC_RBRC,        KC_RPRN,        LSFT(KC_RBRC),                       OS_WORD_LEFT,     KC_HOME,     KC_END,     OS_WORD_RIGHT,  KC_PGUP,    KC_DEL,
+        KC_ESC,   KC_EQL,   KC_PIPE,       KC_LBRC,        KC_LPRN,        LSFT(KC_LBRC),                       KC_LEFT,          KC_DOWN,     KC_UP,      KC_RGHT,        KC_PGDN,    KC_ENT,
+        KC_LSFT,  KC_BSLS,  KC_SLSH,       LSFT(KC_EQL),   KC_SCLN,        KC_MINS,       _______,  _______,   OS_DEL_WORD,      KC_COLN,     KC_UNDS,    OS_DEL_WORD_FWD, KC_SLSH,   KC_RSFT,
+                                KC_LALT,  _______,        _______,        _______,       _______,  _______,   _______,          _______,     _______,    _______
     ),
 
     /*
-     * RAISE - Editor/Vim commands
+     * RAISE - Pane/Buffer Navigation + Editor + Nvim Macros
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * |  `   |Harp1 |Harp2 |Harp3 |Harp4 |Harp5 |                    |      |      |      |      |      | Bspc |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Tab  | Quit | Split| PrBuf| NxBuf|TabSwi|                    | C-U  | Home | End  | PgUp |      | Del  |
+     * | Tab  | Quit |      | Split|FindFl| Grep |                    | S-H  | C-D  | C-U  | S-L  |      | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Esc  |      |LftBuf|DwnBuf|UpBuf |RgtBuf|-------.    ,-------| C-D  | A-←  | A-→  | PgDn |      | Ent  |
+     * | Esc  |      |LSPFmt|LSPAct|LSPRen| CPR  |-------.    ,-------|CwPane|CwPane|CwPane|CwPane|      | Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
-     * |LShift|      |      | CPR  |DelWrd| Max  |-------|    |-------| Save | HrpPv| HrpNx|      |      |RShift|
+     * |LShift|GitStg|GitBlm|      |DelWrd| Save |-------|    |-------|HrpMnu|HrpPrv|HrpNxt|HrpAdd|      |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
      *            |      |      |      |      |/       /       \      \ |      |      |      |      |
      *            |      |      |      |      |/       /         \      \ |      |      |      |      |
      *            `----------------------------------'           '------''---------------------------'
      */
     [RAISE] = LAYOUT(
-        KC_GRV,   MC_HARPOON_GOTO_1, MC_HARPOON_GOTO_2, MC_HARPOON_GOTO_3, MC_HARPOON_GOTO_4, MC_HARPOON_GOTO_5,                  _______,          _______,          _______,  _______,  _______,  KC_BSPC,
-        KC_TAB,   MC_QUIT,           MC_SPLIT_HELPER,   MC_PREV_BUFFER,    MC_NEXT_BUFFER,    MC_TAB_SWITCHER,                     LCTL(KC_U),       KC_HOME,          KC_END,   KC_PGUP,  _______,  KC_DEL,
-        KC_ESC,   _______,           MC_LEFT_BUFFER,    MC_DOWN_BUFFER,    MC_UP_BUFFER,      MC_RIGHT_BUFFER,                     LCTL(KC_D),       LALT(KC_LEFT),    LALT(KC_RGHT), KC_PGDN, _______, KC_ENT,
-        KC_LSFT,  _______,           _______,           MC_CPR,            MC_DELETE_WORD,    MC_MAXIMIZER,     _______,_______,  MC_SAVE,          MC_HARPOON_PREV,  MC_HARPOON_NEXT,  _______,  _______,  KC_RSFT,
-                                KC_LALT,  _______,           _______,           _______,          _______,_______,  _______,          _______,          _______, _______
+        KC_GRV,   MC_HARPOON_GOTO_1, MC_HARPOON_GOTO_2, MC_HARPOON_GOTO_3, MC_HARPOON_GOTO_4, MC_HARPOON_GOTO_5,                     _______,       _______,          _______,       _______,       _______,       KC_BSPC,
+        KC_TAB,   MC_QUIT,           _______,           MC_SPLIT_HELPER,   MC_FIND_FILES,     MC_GREP_TEXT,                            LSFT(KC_H),    LCTL(KC_D),       LCTL(KC_U),    LSFT(KC_L),    _______,       KC_DEL,
+        KC_ESC,   _______,           MC_LSP_FORMAT,     MC_LSP_ACTION,     MC_LSP_RENAME,     MC_CPR,                                  MC_PANE_LEFT,  MC_PANE_DOWN,     MC_PANE_UP,    MC_PANE_RIGHT, _______,       KC_ENT,
+        KC_LSFT,  MC_GIT_STAGE,      MC_GIT_BLAME,      _______,           MC_DELETE_WORD,    MC_SAVE,           _______,  _______,   MC_HARPOON_MENU, MC_HARPOON_PREV, MC_HARPOON_NEXT, MC_HARPOON_ADD, _______,    KC_RSFT,
+                                KC_LALT,  _______,           _______,           _______,           _______,  _______,   _______,       _______,          _______,       _______
     ),
 
     /*
@@ -288,9 +305,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * |  `   |      |      |      |      |      |                    |      |      |      |      |      | Bspc |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Tab  |KillSe|KillPa| Prev | Next | ChSh |                    |Sessiz|      |Instl |      |      | Del  |
+     * | Tab  |KillSe|KillPa| Prev | Next | ChSh |                    |Sessiz|LastWn|Instl |      | Zoom | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Esc  |Reload|Restor| Save | New  |Rename|-------.    ,-------|  Left| Down |  Up  | Right|      | Ent  |
+     * | Esc  |Reload|Restor| Save | New  |Rename|-------.    ,-------|  Left| Down |  Up  | Right|CopyMd| Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
      * |LShift|      |      |Sessio|Detach|SplitV|-------|    |-------|      |SplitH|      |      |      |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -300,8 +317,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [TMUX] = LAYOUT(
         KC_GRV,   _______,              _______,           _______,        _______,        _______,                                       _______,                 _______,              _______,            _______,                  _______,  KC_BSPC,
-        KC_TAB,   MC_TMUX_KILL_SESSION, MC_TMUX_KILL_PANE, MC_TMUX_PREV,   MC_TMUX_NEXT,   MC_TMUX_CHSH,                                  MC_TMUX_SESSIONIZER,     _______,              MC_TMUX_INSTALL,    _______,                  _______,  KC_DEL,
-        KC_ESC,   MC_TMUX_RELOAD,       MC_TMUX_RESTORE,   MC_TMUX_SAVE,   MC_TMUX_NEW,    MC_TMUX_RENAME,                                MC_TMUX_SWITCH_LEFT,     MC_TMUX_SWITCH_DOWN,  MC_TMUX_SWITCH_UP,  MC_TMUX_SWITCH_RIGHT,     _______,  KC_ENT,
+        KC_TAB,   MC_TMUX_KILL_SESSION, MC_TMUX_KILL_PANE, MC_TMUX_PREV,   MC_TMUX_NEXT,   MC_TMUX_CHSH,                                  MC_TMUX_SESSIONIZER,     MC_TMUX_LAST_WINDOW,  MC_TMUX_INSTALL,    _______,                  MC_TMUX_ZOOM,  KC_DEL,
+        KC_ESC,   MC_TMUX_RELOAD,       MC_TMUX_RESTORE,   MC_TMUX_SAVE,   MC_TMUX_NEW,    MC_TMUX_RENAME,                                MC_TMUX_SWITCH_LEFT,     MC_TMUX_SWITCH_DOWN,  MC_TMUX_SWITCH_UP,  MC_TMUX_SWITCH_RIGHT,     MC_TMUX_COPY_MODE,  KC_ENT,
         KC_LSFT,  _______,              _______,           MC_TMUX_SESSIONS, MC_TMUX_DETACH, MC_TMUX_SPLIT_V, _______,         _______,  _______,                 MC_TMUX_SPLIT_H,      _______,            _______,                  _______,  KC_RSFT,
                                 KC_LALT,  _______,        _______,        _______,         _______,         _______,  _______,                 _______,              _______, _______
     ),
@@ -355,13 +372,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [BASE]        = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [LOWER]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [RAISE]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [MAINTENANCE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [TMUX]        = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [GAMER]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
-    [BASE_PLUS]   = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU), ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
+    [BASE]        = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),          ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
+    [LOWER]       = {ENCODER_CCW_CW(OS_WORD_LEFT, OS_WORD_RIGHT), ENCODER_CCW_CW(KC_PGUP, KC_PGDN)},
+    [RAISE]       = {ENCODER_CCW_CW(LSFT(KC_H), LSFT(KC_L)),  ENCODER_CCW_CW(LCTL(KC_U), LCTL(KC_D))},
+    [MAINTENANCE] = {ENCODER_CCW_CW(RM_VALD, RM_VALU),         ENCODER_CCW_CW(RM_PREV, RM_NEXT)},
+    [TMUX]        = {ENCODER_CCW_CW(MC_TMUX_PREV, MC_TMUX_NEXT), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [GAMER]       = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),          ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
+    [BASE_PLUS]   = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU),          ENCODER_CCW_CW(KC_MPRV, KC_MNXT)},
 };
 #endif
 
@@ -613,6 +630,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     set_last_mods(0);
   }
 
+  // OS-aware word navigation: Alt on macOS, Ctrl on Win/Linux.
+  {
+    uint16_t mod = (detected_host_os() == OS_MACOS) ? KC_LALT : KC_LCTL;
+    switch (keycode) {
+      case OS_WORD_LEFT:
+        if (record->event.pressed) { register_code(mod); register_code(KC_LEFT); }
+        else { unregister_code(KC_LEFT); unregister_code(mod); }
+        return false;
+      case OS_WORD_RIGHT:
+        if (record->event.pressed) { register_code(mod); register_code(KC_RGHT); }
+        else { unregister_code(KC_RGHT); unregister_code(mod); }
+        return false;
+      case OS_DEL_WORD:
+        if (record->event.pressed) { register_code(mod); register_code(KC_BSPC); }
+        else { unregister_code(KC_BSPC); unregister_code(mod); }
+        return false;
+      case OS_DEL_WORD_FWD:
+        if (record->event.pressed) { register_code(mod); register_code(KC_DEL); }
+        else { unregister_code(KC_DEL); unregister_code(mod); }
+        return false;
+    }
+  }
+
   if (record->event.pressed) {
     switch (keycode) {
         case EXIT:
@@ -736,49 +776,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             tap_code(KC_ENT);
             return false;
 
-        case MC_MAXIMIZER:
-            tap_code16(KC_LALT);
-            tap_code16(KC_W);
-            tap_code16(KC_M);
-            return false;
-
         case MC_SPLIT_HELPER:
             tap_code16(LGUI(KC_K));
-            return false;
-
-        case MC_TAB_SWITCHER:
-            tap_code16(KC_LALT);
-            tap_code16(KC_B);
-            tap_code16(KC_F);
-            return false;
-
-        // Buffer navigation
-        case MC_PREV_BUFFER:
-            tap_code16(LGUI(LALT(KC_LEFT)));
-            return false;
-
-        case MC_NEXT_BUFFER:
-            tap_code16(LGUI(LALT(KC_RIGHT)));
-            return false;
-
-        case MC_LEFT_BUFFER:
-            tap_code16(LCTL(KC_W));
-            tap_code16(KC_LEFT);
-            return false;
-
-        case MC_RIGHT_BUFFER:
-            tap_code16(LCTL(KC_W));
-            tap_code16(KC_RIGHT);
-            return false;
-
-        case MC_UP_BUFFER:
-            tap_code16(LCTL(KC_W));
-            tap_code16(KC_UP);
-            return false;
-
-        case MC_DOWN_BUFFER:
-            tap_code16(LCTL(KC_W));
-            tap_code16(KC_DOWN);
             return false;
 
         // Tmux
@@ -883,48 +882,123 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
               tap_code16(LCTL(KC_R));
               return false;
 
-				// Harpoon
-				case MC_HARPOON_NEXT:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():next()");
-            tap_code(KC_ENT);
-          return false;
+        case MC_TMUX_ZOOM:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_Z);
+            return false;
 
-				case MC_HARPOON_PREV:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():prev()");
-            tap_code(KC_ENT);
-          return false;
+        case MC_TMUX_COPY_MODE:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_LBRC);
+            return false;
 
-				case MC_HARPOON_GOTO_1:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(1)");
-            tap_code(KC_ENT);
-          return false;
+        case MC_TMUX_LAST_WINDOW:
+            tap_code16(LCTL(KC_B));
+            tap_code(KC_L);
+            return false;
 
-				case MC_HARPOON_GOTO_2:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(2)");
-            tap_code(KC_ENT);
-          return false;
+        // Pane navigation (C-w + direction)
+        case MC_PANE_LEFT:
+            tap_code16(LCTL(KC_W));
+            tap_code(KC_H);
+            return false;
 
-				case MC_HARPOON_GOTO_3:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(3)");
-            tap_code(KC_ENT);
-          return false;
+        case MC_PANE_DOWN:
+            tap_code16(LCTL(KC_W));
+            tap_code(KC_J);
+            return false;
 
-				case MC_HARPOON_GOTO_4:
-            tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(4)");
-            tap_code(KC_ENT);
-          return false;
+        case MC_PANE_UP:
+            tap_code16(LCTL(KC_W));
+            tap_code(KC_K);
+            return false;
 
-				case MC_HARPOON_GOTO_5:
+        case MC_PANE_RIGHT:
+            tap_code16(LCTL(KC_W));
+            tap_code(KC_L);
+            return false;
+
+        // Nvim macros (3+ keystroke sequences)
+        case MC_FIND_FILES:
             tap_code(KC_ESCAPE);
-            SEND_STRING(":lua local harpoon = require(\" harpoon\") harpoon:list():select(5)");
-            tap_code(KC_ENT);
-          return false;
+            SEND_STRING(" ff");
+            return false;
+
+        case MC_GREP_TEXT:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" ft");
+            return false;
+
+        case MC_LSP_FORMAT:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" lf");
+            return false;
+
+        case MC_LSP_ACTION:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" la");
+            return false;
+
+        case MC_LSP_RENAME:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" ln");
+            return false;
+
+        case MC_GIT_STAGE:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" gs");
+            return false;
+
+        case MC_GIT_BLAME:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" gb");
+            return false;
+
+        // Harpoon (uses nvim leader shortcuts)
+        case MC_HARPOON_NEXT:
+            tap_code(KC_ESCAPE);
+            tap_code(KC_DOT);
+            return false;
+
+        case MC_HARPOON_PREV:
+            tap_code(KC_ESCAPE);
+            tap_code(KC_COMM);
+            return false;
+
+        case MC_HARPOON_GOTO_1:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" h1");
+            return false;
+
+        case MC_HARPOON_GOTO_2:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" h2");
+            return false;
+
+        case MC_HARPOON_GOTO_3:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" h3");
+            return false;
+
+        case MC_HARPOON_GOTO_4:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" h4");
+            return false;
+
+        case MC_HARPOON_GOTO_5:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" h5");
+            return false;
+
+        case MC_HARPOON_ADD:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" ha");
+            return false;
+
+        case MC_HARPOON_MENU:
+            tap_code(KC_ESCAPE);
+            SEND_STRING(" hh");
+            return false;
     }
   }
 
@@ -968,8 +1042,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 void keyboard_post_init_user(void) {
-    // Set a default PaletteFx effect on boot.
-    rgb_matrix_mode(RGB_MATRIX_CUSTOM_PALETTEFX_FLOW);
+    // RGB mode is persisted in EEPROM automatically.
+    // Default mode is set via RGB_MATRIX_DEFAULT_MODE in config.h.
 }
 
 #ifdef OLED_ENABLE
@@ -987,8 +1061,44 @@ static void render_logo(void) {
     };
     oled_write_raw_P(raw_logo, sizeof(raw_logo));
 }
-bool oled_task_user() {
-    render_logo();
+
+static void render_status(void) {
+    // Line 1: Layer name
+    uint8_t layer = get_highest_layer(layer_state | default_layer_state);
+    switch (layer) {
+        case BASE:        oled_write_P(PSTR("BASE\n"), false); break;
+        case LOWER:       oled_write_P(PSTR("LOWER\n"), false); break;
+        case RAISE:       oled_write_P(PSTR("RAISE\n"), false); break;
+        case MAINTENANCE: oled_write_P(PSTR("MAINT\n"), false); break;
+        case TMUX:        oled_write_P(PSTR("TMUX\n"), false); break;
+        case GAMER:       oled_write_P(PSTR("GAMER\n"), false); break;
+        case BASE_PLUS:   oled_write_P(PSTR("BASE+\n"), false); break;
+        default:          oled_write_P(PSTR("???\n"), false); break;
+    }
+
+    // Line 2: Active modifiers (GASC = Gui, Alt, Shift, Ctrl)
+    uint8_t mods = get_mods() | get_oneshot_mods();
+    oled_write_P((mods & MOD_MASK_GUI)   ? PSTR("GUI ") : PSTR("    "), false);
+    oled_write_P((mods & MOD_MASK_ALT)   ? PSTR("ALT ") : PSTR("    "), false);
+    oled_write_P((mods & MOD_MASK_SHIFT) ? PSTR("SFT ") : PSTR("    "), false);
+    oled_write_P((mods & MOD_MASK_CTRL)  ? PSTR("CTL\n") : PSTR("   \n"), false);
+
+    // Line 3: Status indicators
+    oled_write_P(is_caps_word_on() ? PSTR("CW ") : PSTR("   "), false);
+    oled_write_P(is_layer_locked(layer) ? PSTR("LOCK ") : PSTR("     "), false);
+    oled_write_P(socd_cleaner_enabled ? PSTR("SOCD\n") : PSTR("    \n"), false);
+
+    // Line 4: WPM
+    oled_write_P(PSTR("WPM: "), false);
+    oled_write(get_u8_str(get_current_wpm(), ' '), false);
+}
+
+bool oled_task_user(void) {
+    if (is_keyboard_master()) {
+        render_status();
+    } else {
+        render_logo();
+    }
     return false;
 }
 

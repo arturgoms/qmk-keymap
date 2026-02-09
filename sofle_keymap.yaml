@@ -7,42 +7,16 @@ layers:
   - [MUTE, MPLY, K, H, ',', ., /, RSFT, LALT, LGUI, LR TMUX, LR RAISE, MOD CTEN, QK AREP]
   - [LR LOWER, LR MAIN, DF(GAMER), DF(BASE PLUS)]
   LOWER:
-  - ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BSPC, TAB, SCOPE]
-  - - SELWORD
-    - ']'
-    - )
-    - Sft+]
-    - '"'
-    - Ctl+LEFT
-    - Ctl+RGHT
-    - ''''
-    - {t: ▽, type: trans}
-    - DEL
-    - ESC
-    - {t: ▽, type: trans}
-    - '|'
-    - '['
-  - - (
-    - Sft+[
-    - LEFT
-    - DOWN
-    - UP
-    - RGHT
-    - {t: ▽, type: trans}
-    - ENT
-    - LSFT
-    - {t: ▽, type: trans}
-    - /
-    - Sft+=
-    - ;
-    - '-'
+  - ['`', '1', '2', '3', '4', '5', Ctl+LEFT, Ctl+DOWN, Ctl+UP, Ctl+RGHT, '0', BSPC, TAB, SCOPE]
+  - [SELWORD, ']', ), 'Sft+]', OS WORD LEFT, HOME, END, OS WORD RIGHT, PGUP, DEL, ESC, '=', '|', '[']
+  - [(, 'Sft+[', LEFT, DOWN, UP, RGHT, PGDN, ENT, LSFT, \, /, Sft+=, ;, '-']
   - - {t: ▽, type: trans}
     - {t: ▽, type: trans}
-    - Sft+-
+    - OS DEL WORD
     - ':'
-    - '='
-    - \
-    - {t: ▽, type: trans}
+    - _
+    - OS DEL WORD FWD
+    - /
     - RSFT
     - LALT
     - {t: ▽, type: trans}
@@ -69,40 +43,40 @@ layers:
     - BSPC
     - TAB
     - MC QUIT
-  - - MC SPLIT HELPER
-    - MC PREV BUFFER
-    - MC NEXT BUFFER
-    - MC TAB SWITCHER
+  - - {t: ▽, type: trans}
+    - MC SPLIT HELPER
+    - MC FIND FILES
+    - MC GREP TEXT
+    - Sft+H
+    - Ctl+D
     - Ctl+U
-    - HOME
-    - END
-    - PGUP
+    - Sft+L
     - {t: ▽, type: trans}
     - DEL
     - ESC
     - {t: ▽, type: trans}
-    - MC LEFT BUFFER
-    - MC DOWN BUFFER
-  - - MC UP BUFFER
-    - MC RIGHT BUFFER
-    - Ctl+D
-    - Alt+LEFT
-    - Alt+RGHT
-    - PGDN
+    - MC LSP FORMAT
+    - MC LSP ACTION
+  - - MC LSP RENAME
+    - MC CPR
+    - MC PANE LEFT
+    - MC PANE DOWN
+    - MC PANE UP
+    - MC PANE RIGHT
     - {t: ▽, type: trans}
     - ENT
     - LSFT
+    - MC GIT STAGE
+    - MC GIT BLAME
     - {t: ▽, type: trans}
-    - {t: ▽, type: trans}
-    - MC CPR
     - MC DELETE WORD
-    - MC MAXIMIZER
+    - MC SAVE
   - - {t: ▽, type: trans}
     - {t: ▽, type: trans}
-    - MC SAVE
+    - MC HARPOON MENU
     - MC HARPOON PREV
     - MC HARPOON NEXT
-    - {t: ▽, type: trans}
+    - MC HARPOON ADD
     - {t: ▽, type: trans}
     - RSFT
     - LALT
@@ -196,10 +170,10 @@ layers:
     - MC TMUX NEXT
     - MC TMUX CHSH
     - MC TMUX SESSIONIZER
-    - {t: ▽, type: trans}
+    - MC TMUX LAST WINDOW
     - MC TMUX INSTALL
     - {t: ▽, type: trans}
-    - {t: ▽, type: trans}
+    - MC TMUX ZOOM
     - DEL
     - ESC
     - MC TMUX RELOAD
@@ -211,7 +185,7 @@ layers:
     - MC TMUX SWITCH DOWN
     - MC TMUX SWITCH UP
     - MC TMUX SWITCH RIGHT
-    - {t: ▽, type: trans}
+    - MC TMUX COPY MODE
     - ENT
     - LSFT
     - {t: ▽, type: trans}
