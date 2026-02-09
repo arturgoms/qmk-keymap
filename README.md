@@ -23,7 +23,7 @@ repo in `qmk_firmware/keyboards/sofle_choc/keymaps/arturgoms`.
 
 1. Compile
 ```bash
-qmk compile -kb sofle_choc -km arturgoms
+qmk compile -kb sofle_choc -km arturgoms -e CONVERT_TO=rp2040_ce
 ```
 
 2. Flash
@@ -31,3 +31,16 @@ qmk compile -kb sofle_choc -km arturgoms
    - It will appear as a USB drive (usually named `RPI-RP2`)
    - Drag the `.uf2` file from `qmk_firmware/.build/` to the drive
    - The controller will automatically reboot with the new firmware
+
+## Generating the Keymap SVG
+
+To regenerate the `doc/sofle.svg` keymap image:
+
+1. Generate the YAML file from the keymap source:
+```bash
+qmk c2json keyboards/sofle_choc/keymaps/arturgoms/keymap.c --no-cpp \
+  | keymap parse --layer-names BASE LOWER RAISE MAINTENANCE TMUX GAMER BASE_PLUS -c 14 -q - \
+  > ~/projects/personal/qmk-keymap/sofle_keymap.yaml
+```
+
+2. Upload `sofle_keymap.yaml` to [keymap-drawer](https://keymap-drawer.streamlit.app) to generate the SVG
