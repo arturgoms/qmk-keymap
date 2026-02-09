@@ -10,7 +10,7 @@ Sofle v2 Choc with RP2040 controller
 
 ## My Keymap
 
-![Keymap](doc/idobao.png)
+![Keymap](doc/sofle.svg)
 
 ## License
 
