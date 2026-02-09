@@ -1,0 +1,277 @@
+layout: {qmk_keyboard: sofle_choc, layout_name: LAYOUT}
+layers:
+  BASE:
+  - ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BSPC, TAB, Q]
+  - [W, F, P, B, J, L, U, Y, '''', DEL, ESC, HOME A, HOME R, HOME S]
+  - [HOME T, G, M, HOME N, HOME E, HOME I, HOME O, ENT, CAPS LOCK, Z, X, C, D, V]
+  - [MUTE, MPLY, K, H, ',', ., /, RSFT, LALT, LGUI, LR TMUX, LR RAISE, MOD CTEN, QK AREP]
+  - [LR LOWER, LR MAIN, DF(GAMER), DF(BASE PLUS)]
+  LOWER:
+  - ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BSPC, TAB, SCOPE]
+  - - SELWORD
+    - ']'
+    - )
+    - Sft+]
+    - '"'
+    - Ctl+LEFT
+    - Ctl+RGHT
+    - ''''
+    - {t: ▽, type: trans}
+    - DEL
+    - ESC
+    - {t: ▽, type: trans}
+    - '|'
+    - '['
+  - - (
+    - Sft+[
+    - LEFT
+    - DOWN
+    - UP
+    - RGHT
+    - {t: ▽, type: trans}
+    - ENT
+    - LSFT
+    - {t: ▽, type: trans}
+    - /
+    - Sft+=
+    - ;
+    - '-'
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - Sft+-
+    - ':'
+    - '='
+    - \
+    - {t: ▽, type: trans}
+    - RSFT
+    - LALT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  RAISE:
+  - - '`'
+    - MC HARPOON GOTO 1
+    - MC HARPOON GOTO 2
+    - MC HARPOON GOTO 3
+    - MC HARPOON GOTO 4
+    - MC HARPOON GOTO 5
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - BSPC
+    - TAB
+    - MC QUIT
+  - - MC SPLIT HELPER
+    - MC PREV BUFFER
+    - MC NEXT BUFFER
+    - MC TAB SWITCHER
+    - Ctl+U
+    - HOME
+    - END
+    - PGUP
+    - {t: ▽, type: trans}
+    - DEL
+    - ESC
+    - {t: ▽, type: trans}
+    - MC LEFT BUFFER
+    - MC DOWN BUFFER
+  - - MC UP BUFFER
+    - MC RIGHT BUFFER
+    - Ctl+D
+    - Alt+LEFT
+    - Alt+RGHT
+    - PGDN
+    - {t: ▽, type: trans}
+    - ENT
+    - LSFT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - MC CPR
+    - MC DELETE WORD
+    - MC MAXIMIZER
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - MC SAVE
+    - MC HARPOON PREV
+    - MC HARPOON NEXT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - RSFT
+    - LALT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  MAINTENANCE:
+  - - '`'
+    - QK BOOT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - BSPC
+    - TAB
+    - EXIT
+  - - RM VALD
+    - RM VALU
+    - RM NEXT
+    - QK LLCK
+    - OM W U
+    - OM BTNS
+    - OM U
+    - OM BTN2
+    - TURBO
+    - DEL
+    - ESC
+    - {t: ▽, type: trans}
+    - RM HUED
+    - RM HUEU
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - OM W D
+    - OM L
+    - OM D
+    - OM R
+    - OM SLOW
+    - ENT
+    - LSFT
+    - {t: ▽, type: trans}
+    - RM SATD
+    - RM SATU
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - OM BTN3
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - RSFT
+    - LALT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  TMUX:
+  - - '`'
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - BSPC
+    - TAB
+    - MC TMUX KILL SESSION
+  - - MC TMUX KILL PANE
+    - MC TMUX PREV
+    - MC TMUX NEXT
+    - MC TMUX CHSH
+    - MC TMUX SESSIONIZER
+    - {t: ▽, type: trans}
+    - MC TMUX INSTALL
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - DEL
+    - ESC
+    - MC TMUX RELOAD
+    - MC TMUX RESTORE
+    - MC TMUX SAVE
+  - - MC TMUX NEW
+    - MC TMUX RENAME
+    - MC TMUX SWITCH LEFT
+    - MC TMUX SWITCH DOWN
+    - MC TMUX SWITCH UP
+    - MC TMUX SWITCH RIGHT
+    - {t: ▽, type: trans}
+    - ENT
+    - LSFT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - MC TMUX SESSIONS
+    - MC TMUX DETACH
+    - MC TMUX SPLIT V
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - MC TMUX SPLIT H
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - RSFT
+    - LALT
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+  GAMER:
+  - ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BSPC, TAB, Q]
+  - [W, E, R, T, Y, U, I, O, P, DEL, ESC, A, S, D]
+  - [F, G, H, J, K, L, ;, ENT, LSFT, Z, X, C, V, B]
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - N
+    - M
+    - ','
+    - .
+    - /
+    - RSFT
+    - LALT
+    - SPC
+    - LCTL
+    - LR RAISE
+    - LCTL
+    - QK AREP
+  - [LR LOWER, LR MAIN, DF(BASE PLUS), DF(BASE)]
+  BASE_PLUS:
+  - ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BSPC, TAB, Q]
+  - [W, F, P, B, J, L, U, Y, '''', DEL, ESC, A, R, S]
+  - [T, G, M, HOME N, HOME E, HOME I, HOME O, ENT, LSFT, Z, X, C, D, V]
+  - - {t: ▽, type: trans}
+    - {t: ▽, type: trans}
+    - K
+    - H
+    - ','
+    - .
+    - /
+    - RSFT
+    - LALT
+    - LGUI
+    - LR TMUX
+    - LR RAISE
+    - LCTL
+    - QK AREP
+  - [LR LOWER, LR MAIN, DF(GAMER), DF(BASE)]
