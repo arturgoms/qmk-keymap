@@ -12,75 +12,307 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-:guage        -> gauge
-:the the:     -> the
+## ===== COMMON ENGLISH TYPOS =====
+
+# Top misspelled words
 :thier        -> their
+:htere        -> there
 :ture         -> true
+:the the:     -> the
+becuase       -> because
+becasue       -> because
+beacuse       -> because
+beccause      -> because
+shoudl        -> should
+woudl         -> would
+coudl         -> could
+thnig         -> thing
+thikn         -> think
+:goign        -> going
+realy         -> really
+raelly        -> really
+alwyas        -> always
+alwasy        -> always
+seperate      -> separate
+occured       -> occurred
+occassion     -> occasion
+recieve       -> receive
 accomodate    -> accommodate
 acommodate    -> accommodate
 aparent       -> apparent
-aparrent      -> apparent
 apparant      -> apparent
+aparrent      -> apparent
 apparrent     -> apparent
 aquire        -> acquire
-becuase       -> because
-cauhgt        -> caught
-cheif         -> chief
-choosen       -> chosen
-cieling       -> ceiling
+guaratee      -> guarantee
+gaurantee     -> guarantee
+priviledge    -> privilege
+heirarchy     -> hierarchy
 collegue      -> colleague
 concensus     -> consensus
-contians      -> contains
-cosnt         -> const
-dervied       -> derived
-dosen't       -> doesn't
-fales         -> false
-fasle         -> false
-fitler        -> filter
-flase         -> false
-foward        -> forward
-frequecy      -> frequency
-gaurantee     -> guarantee
-guaratee      -> guarantee
-heigth        -> height
-heirarchy     -> hierarchy
-inclued       -> include
-interator     -> iterator
-intput        -> input
-invliad       -> invalid
-lenght        -> length
-liasion       -> liaison
-libary        -> library
-listner       -> listener
-looses:       -> loses
-looup         -> lookup
-manefist      -> manifest
-namesapce     -> namespace
-namespcae     -> namespace
-occassion     -> occasion
-occured       -> occurred
-ouptut        -> output
-ouput         -> output
-overide       -> override
-postion       -> position
-priviledge    -> privilege
-psuedo        -> pseudo
-recieve       -> receive
-refered       -> referred
 relevent      -> relevant
 repitition    -> repetition
-reuslt        -> result
+dosen't       -> doesn't
+choosen       -> chosen
+
+# Common typing errors
+almsot        -> almost
+alomst        -> almost
+chnage        -> change
+chekc         -> check
+claer         -> clear
+contian       -> contain
+fitler        -> filter
+frequecy      -> frequency
+heigth        -> height
+iamge         -> image
+inital        -> initial
+lenght        -> length
+libary        -> library
+probaly       -> probably
+probelm       -> problem
+singel        -> single
+toghether     -> together
+unkown        -> unknown
+unqiue        -> unique
+widht         -> width
+foward        -> forward
+todya         -> today
+cauhgt        -> caught
+cheif         -> chief
+cieling       -> ceiling
+liasion       -> liaison
+saftey        -> safety
+thresold      -> threshold
+intput        -> input
+:guage        -> gauge
+looses:       -> loses
+
+# Skipped spaces
+:alot:        -> a lot
+:andthe       -> and the
+aboutthe      -> about the
+fromthe       -> from the
+:tothe        -> to the
+
+## ===== GENERAL PROGRAMMING =====
+
+# Keywords
+cosnt         -> const
 retrun        -> return
 retun         -> return
 reutrn        -> return
-saftey        -> safety
-seperate      -> separate
+fasle         -> false
+fales         -> false
+flase         -> false
+failse        -> false
 singed        -> signed
 stirng        -> string
 strign        -> string
 swithc        -> switch
 swtich        -> switch
-thresold      -> threshold
-udpate        -> update
-widht         -> width
+doulbe        -> double
+virutal       -> virtual
+vitual        -> virtual
+yeild         -> yield
+overide       -> override
+ovveride      -> override
+psuedo        -> pseudo
+namesapce     -> namespace
+namespcae     -> namespace
+interator     -> iterator
+looup         -> lookup
+nulltpr       -> nullptr
+teamplate     -> template
+tempalte      -> template
+operaotr      -> operator
+dyanmic       -> dynamic
+cacheing      -> caching
+complier      -> compiler
+poitner       -> pointer
+indeces       -> indices
+indicies      -> indices
+# Catch "execute", "executable", etc.
+excecut       -> execut
 
+# Common code terms
+fucntion      -> function
+funciton      -> function
+asynhc        -> async
+awiat         -> await
+defualt       -> default
+deafult       -> default
+dfeault       -> default
+imoprt        -> import
+improt        -> import
+exprot        -> export
+exprt:        -> export
+pritn:        -> print
+debuger       -> debugger
+debuggr       -> debugger
+arguemnt      -> argument
+arugment      -> argument
+attirbute     -> attribute
+attriubte     -> attribute
+booelan       -> boolean
+boolen        -> boolean
+calback       -> callback
+callbakc      -> callback
+conifg        -> config
+contsant      -> constant
+construcotr   -> constructor
+contorller    -> controller
+depercated    -> deprecated
+depreacted    -> deprecated
+dependecy     -> dependency
+dependncy     -> dependency
+databse       -> database
+direcotry     -> directory
+directroy     -> directory
+docuemnt      -> document
+elemnet       -> element
+enpoint       -> endpoint
+endpont       -> endpoint
+enviroment    -> environment
+envirnoment   -> environment
+exeption      -> exception
+excpetion     -> exception
+genertor      -> generator
+hanlder       -> handler
+instnace      -> instance
+moduelt       -> module
+obejct        -> object
+pacakge       -> package
+paramter      -> parameter
+pramaeter     -> parameter
+promsie       -> promise
+proimse       -> promise
+proeprty      -> property
+propery       -> property
+:rference     -> reference
+referece      -> reference
+reponse       -> response
+repsone       -> response
+scheam        -> schema
+schmea        -> schema
+sesison       -> session
+seesion       -> session
+servcie       -> service
+vairable      -> variable
+vraiable      -> variable
+undfined      -> undefined
+udnefined     -> undefined
+algortihm     -> algorithm
+algorthm      -> algorithm
+
+# Data structures and patterns
+arrary        -> array
+dictinoary    -> dictionary
+initailize    -> initialize
+implment      -> implement
+implemetn     -> implement
+regiseter     -> register
+regsiter      -> register
+midleware     -> middleware
+middlewrae    -> middleware
+serializr     -> serializer
+subscripe     -> subscribe
+subscirbe     -> subscribe
+
+## ===== PYTHON / DJANGO =====
+
+# Python keywords and builtins
+:slef         -> self
+excetp        -> except
+:expcet       -> expect
+lambad        -> lambda
+:clsas        -> class
+gloabl        -> global
+
+# Django terms
+migraiton     -> migration
+migratoin     -> migration
+qeuryset      -> queryset
+quersyet      -> queryset
+serailizer    -> serializer
+srializer     -> serializer
+# tempaltes covered by tempalte -> template
+:dajngo       -> django
+:djagno       -> django
+viewste       -> viewset
+viweest       -> viewset
+permsision    -> permission
+permisison    -> permission
+
+## ===== TYPESCRIPT / REACT =====
+
+# TypeScript
+interfce      -> interface
+inteface      -> interface
+interfcae     -> interface
+tyepscript    -> typescript
+typescrpit    -> typescript
+
+# React
+componet      -> component
+compnent      -> component
+compoennt     -> component
+
+## ===== GIT / DEVOPS =====
+
+comit:        -> commit
+commti        -> commit
+branhc        -> branch
+bracnh        -> branch
+:meger        -> merge
+:chekout      -> checkout
+# chekcout covered by chekc -> check
+reabse        -> rebase
+repostiory    -> repository
+repositroy    -> repository
+
+## ===== ADDITIONAL USEFUL WORDS =====
+
+addtion       -> addition
+acutally      -> actually
+availabe      -> available
+availble      -> available
+avaliable     -> available
+bandwith      -> bandwidth
+busness       -> business
+caluculate    -> calculate
+diferent      -> different
+diffrent      -> different
+effecient     -> efficient
+finaly        -> finally
+goverment     -> government
+importamt     -> important
+maintence     -> maintenance
+mesage        -> message
+necesary      -> necessary
+neccesary     -> necessary
+particualr    -> particular
+proccess      -> process
+reveiw        -> review
+scheduel      -> schedule
+similiar      -> similar
+satus         -> status
+statment      -> statement
+succses       -> success
+sugest        -> suggest
+
+# Code review / docs
+refactr       -> refactor
+refacotr      -> refactor
+# docuemntation covered by docuemnt -> document
+# implmentation covered by implment -> implement
+perfomrance   -> performance
+perforamnce   -> performance
+configration  -> configuration
+configuraton  -> configuration
+authentcation -> authentication
+authentiacton -> authentication
+authorizaton  -> authorization
+deploymnet    -> deployment
+deploymant    -> deployment
+infrastrucutre -> infrastructure

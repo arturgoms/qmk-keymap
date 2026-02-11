@@ -19,7 +19,15 @@
       "Bash(git pull:*)",
       "Bash(make:*)",
       "Bash(rsync:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(tmux unbind:*)",
+      "Bash(git checkout:*)",
+      "Bash(luarocks:*)",
+      "Bash(brew list:*)",
+      "Bash(brew install:*)",
+      "Bash(tr:*)",
+      "Bash(git clone:*)"
     ]
   }
 }

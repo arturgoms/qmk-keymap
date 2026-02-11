@@ -1,0 +1,14 @@
+// Bridge file: QMK's built-in autocorrect expects different names than
+// getreuer's make_autocorrection_data.py generates.
+//
+// QMK expects:     autocorrect_data, AUTOCORRECT_MIN_LENGTH, AUTOCORRECT_MAX_LENGTH, DICTIONARY_SIZE
+// Getreuer gives:  autocorrection_data, AUTOCORRECTION_MIN_LENGTH, AUTOCORRECTION_MAX_LENGTH
+
+// Rename the array before including
+#define autocorrection_data autocorrect_data
+#include "features/autocorrection_data.h"
+
+// Alias the constants
+#define AUTOCORRECT_MIN_LENGTH AUTOCORRECTION_MIN_LENGTH
+#define AUTOCORRECT_MAX_LENGTH AUTOCORRECTION_MAX_LENGTH
+#define DICTIONARY_SIZE sizeof(autocorrect_data)

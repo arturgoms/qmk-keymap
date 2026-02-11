@@ -122,6 +122,7 @@ enum custom_keycodes {
     OS_WORD_RIGHT,
     OS_DEL_WORD,
     OS_DEL_WORD_FWD,
+    MC_SELECT_WORD,
     TURBO,
 };
 
@@ -234,46 +235,46 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * LOWER - Symbols (left) + Navigation Cluster (right)
      * ,-----------------------------------------.                    ,-----------------------------------------.
-     * |  `   |   1  |   2  |   3  |   4  |   5  |                    |C-Left|C-Down| C-Up |C-Rght|   0  | Bspc |
+     * |  `   |   1  |   2  |   3  |   4  |   5  |                    |C-Left|C-Down| C-Up |C-Rght|   0  |W-Bspc|
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
      * | Tab  | ::   |SELWRD|   ]  |   )  |   }  |                    |A-Lft | Home |  End |A-Rgt | PgUp | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
      * | Esc  |   =  |   |  |   [  |   (  |   {  |-------.    ,-------| Left | Down |  Up  | Right| PgDn | Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
-     * |LShift|   \  |   /  |   +  |   ;  |   -  |-------|    |-------|A-Bsp |   :  |   _  |A-Del |   /  |RShift|
+     * |LShift|   \  |   /  |   +  |   ;  |   -  |-------|    |-------|   _  |   :  |   =  |      |   /  |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
      *            |      |      |      |      |/       /       \      \ |      |      |      |      |
      *            |      |      |      |      |/       /         \      \ |      |      |      |      |
      *            `----------------------------------'           '------''---------------------------'
      */
     [LOWER] = LAYOUT(
-        KC_GRV,   KC_1,     KC_2,          KC_3,           KC_4,           KC_5,                                LCTL(KC_LEFT),    LCTL(KC_DOWN), LCTL(KC_UP), LCTL(KC_RGHT), KC_0,      KC_BSPC,
+        KC_GRV,   KC_1,     KC_2,          KC_3,           KC_4,           KC_5,                                LCTL(KC_LEFT),    LCTL(KC_DOWN), LCTL(KC_UP), LCTL(KC_RGHT), KC_0,      OS_DEL_WORD,
         KC_TAB,   SCOPE,    SELWORD,       KC_RBRC,        KC_RPRN,        LSFT(KC_RBRC),                       OS_WORD_LEFT,     KC_HOME,     KC_END,     OS_WORD_RIGHT,  KC_PGUP,    KC_DEL,
         KC_ESC,   KC_EQL,   KC_PIPE,       KC_LBRC,        KC_LPRN,        LSFT(KC_LBRC),                       KC_LEFT,          KC_DOWN,     KC_UP,      KC_RGHT,        KC_PGDN,    KC_ENT,
-        KC_LSFT,  KC_BSLS,  KC_SLSH,       LSFT(KC_EQL),   KC_SCLN,        KC_MINS,       _______,  _______,   OS_DEL_WORD,      KC_COLN,     KC_UNDS,    OS_DEL_WORD_FWD, KC_SLSH,   KC_RSFT,
+        KC_LSFT,  KC_BSLS,  KC_SLSH,       LSFT(KC_EQL),   KC_SCLN,        KC_MINS,       _______,  _______,   KC_UNDS,          KC_COLN,     KC_EQL,     _______,         KC_SLSH,   KC_RSFT,
                                 KC_LALT,  _______,        _______,        _______,       _______,  _______,   _______,          _______,     _______,    _______
     ),
 
     /*
      * RAISE - Pane/Buffer Navigation + Editor + Nvim Macros
      * ,-----------------------------------------.                    ,-----------------------------------------.
-     * |  `   |Harp1 |Harp2 |Harp3 |Harp4 |Harp5 |                    |      |      |      |      |      | Bspc |
+     * |  `   |Harp1 |Harp2 |Harp3 |Harp4 |Harp5 |                    |      |      |      |      |      |W-Del |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
      * | Tab  | Quit |      | Split|FindFl| Grep |                    | S-H  | C-D  | C-U  | S-L  |      | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
      * | Esc  |      |LSPFmt|LSPAct|LSPRen| CPR  |-------.    ,-------|CwPane|CwPane|CwPane|CwPane|      | Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
-     * |LShift|GitStg|GitBlm|      |DelWrd| Save |-------|    |-------|HrpMnu|HrpPrv|HrpNxt|HrpAdd|      |RShift|
+     * |LShift|GitStg|GitBlm| viw  | diw  | Save |-------|    |-------|HrpMnu|HrpPrv|HrpNxt|HrpAdd|      |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
      *            |      |      |      |      |/       /       \      \ |      |      |      |      |
      *            |      |      |      |      |/       /         \      \ |      |      |      |      |
      *            `----------------------------------'           '------''---------------------------'
      */
     [RAISE] = LAYOUT(
-        KC_GRV,   MC_HARPOON_GOTO_1, MC_HARPOON_GOTO_2, MC_HARPOON_GOTO_3, MC_HARPOON_GOTO_4, MC_HARPOON_GOTO_5,                     _______,       _______,          _______,       _______,       _______,       KC_BSPC,
+        KC_GRV,   MC_HARPOON_GOTO_1, MC_HARPOON_GOTO_2, MC_HARPOON_GOTO_3, MC_HARPOON_GOTO_4, MC_HARPOON_GOTO_5,                     _______,       _______,          _______,       _______,       _______,       OS_DEL_WORD_FWD,
         KC_TAB,   MC_QUIT,           _______,           MC_SPLIT_HELPER,   MC_FIND_FILES,     MC_GREP_TEXT,                            LSFT(KC_H),    LCTL(KC_D),       LCTL(KC_U),    LSFT(KC_L),    _______,       KC_DEL,
         KC_ESC,   _______,           MC_LSP_FORMAT,     MC_LSP_ACTION,     MC_LSP_RENAME,     MC_CPR,                                  MC_PANE_LEFT,  MC_PANE_DOWN,     MC_PANE_UP,    MC_PANE_RIGHT, _______,       KC_ENT,
-        KC_LSFT,  MC_GIT_STAGE,      MC_GIT_BLAME,      _______,           MC_DELETE_WORD,    MC_SAVE,           _______,  _______,   MC_HARPOON_MENU, MC_HARPOON_PREV, MC_HARPOON_NEXT, MC_HARPOON_ADD, _______,    KC_RSFT,
+        KC_LSFT,  MC_GIT_STAGE,      MC_GIT_BLAME,      MC_SELECT_WORD,    MC_DELETE_WORD,    MC_SAVE,           _______,  _______,   MC_HARPOON_MENU, MC_HARPOON_PREV, MC_HARPOON_NEXT, MC_HARPOON_ADD, _______,    KC_RSFT,
                                 KC_LALT,  _______,           _______,           _______,           _______,  _______,   _______,       _______,          _______,       _______
     ),
 
@@ -732,6 +733,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         case MC_COMMENT:
             tap_code(KC_ESCAPE);
             SEND_STRING(" /");
+            return false;
+
+        case MC_SELECT_WORD:
+            tap_code(KC_V);
+            tap_code(KC_I);
+            tap_code(KC_W);
             return false;
 
         case MC_DELETE_WORD:
