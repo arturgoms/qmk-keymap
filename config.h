@@ -37,6 +37,9 @@
 // Tap-hold configuration for home row mods.
 #define TAPPING_TERM 180
 #define PERMISSIVE_HOLD
+#define CHORDAL_HOLD
+#define FLOW_TAP_TERM 100
+#define SPECULATIVE_HOLD
 
 // Caps Word
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD

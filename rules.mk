@@ -1,4 +1,3 @@
-SRC += features/achordion.c
 SRC += features/custom_shift_keys.c
 SRC += features/select_word.c
 SRC += features/sentence_case.c
@@ -18,3 +17,4 @@ LAYER_LOCK_ENABLE = yes
 AUTOCORRECT_ENABLE = yes
 WPM_ENABLE = yes
 OS_DETECTION_ENABLE = yes
+LTO_ENABLE = yes

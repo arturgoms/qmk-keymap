@@ -15,7 +15,6 @@
  */
 #include QMK_KEYBOARD_H
 
-#include "features/achordion.h"
 #include "features/custom_shift_keys.h"
 #include "features/select_word.h"
 #include "features/sentence_case.h"
@@ -124,6 +123,17 @@ enum custom_keycodes {
     OS_DEL_WORD_FWD,
     MC_SELECT_WORD,
     TURBO,
+    SELLINE,
+    SELWBAK,
+    M_FUNC,
+    M_IMPORT,
+    M_BREAK,
+    M_WHILE,
+    M_VALUE,
+    M_HANDLER,
+    M_JECT,
+    M_KEYWORD,
+    M_XPORT,
 };
 
 // Select Word keycode binding.
@@ -144,12 +154,15 @@ socd_cleaner_t socd_h = {{KC_A, KC_D}, SOCD_CLEANER_LAST};
 //
 // SFB removal and common n-grams:
 //
-//     A * -> AO     L * -> LK      S * -> SK
-//     C * -> CY     M * -> MENT    T * -> TMENT
-//     D * -> DY     O * -> OA      U * -> UE
-//     E * -> EU     P * -> PY      Y * -> YP
-//     G * -> GY     Q * -> QUEN    spc * -> THE
-//     I * -> ION    R * -> RL
+//     A * -> AO     I * -> IMPORT   S * -> SK
+//     B * -> BREAK  J * -> JECT    T * -> TMENT
+//     C * -> CY     K * -> KEYWORD U * -> UE
+//     D * -> DY     L * -> LK      V * -> VALUE
+//     E * -> EU     M * -> MENT    W * -> WHILE
+//     F * -> FUNC   O * -> OA      X * -> XPORT
+//     G * -> GY     P * -> PY      Y * -> YP
+//     H * -> HANDLER Q * -> QUEN   spc * -> THE
+//                    R * -> RL
 //
 // When the magic key types a letter, following it with the repeat key produces
 // "n". This is useful to type certain patterns without SFBs.
@@ -159,13 +172,18 @@ socd_cleaner_t socd_h = {{KC_A, KC_D}, SOCD_CLEANER_LAST};
 //     E * @ -> EUN             (like "reunite")
 //     O * @ -> OAN             (like "loan")
 //
+// Chaining with repeat (@) for plurals:
+//
+//     spc * @ -> THEN          F * @ -> FUNCTIONS
+//     I * @ -> IMPORTS         B * @ -> BREAKS
+//     M * @ -> MENTS           V * @ -> VALUES
+//     Q * @ -> QUENC           H * @ -> HANDLERS
+//     T * @ -> TMENTS          J * @ -> JECTS
+//                              K * @ -> KEYWORDS
+//                              X * @ -> XPORTS
+//
 // Other patterns:
 //
-//     spc * @ -> THEN
-//     I * @ -> IONS            (like "nations")
-//     M * @ -> MENTS           (like "moments")
-//     Q * @ -> QUENC           (like "frequency")
-//     T * @ -> TMENTS          (lite "adjustments")
 //     = *   -> ===             (JS code)
 //     ! *   -> !==             (JS code)
 //     " *   -> """<cursor>"""  (Python code)
@@ -260,9 +278,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * |  `   |Harp1 |Harp2 |Harp3 |Harp4 |Harp5 |                    |      |      |      |      |      |W-Del |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Tab  | Quit |      | Split|FindFl| Grep |                    | S-H  | C-D  | C-U  | S-L  |      | Del  |
+     * | Tab  | Quit |SELLN | Split|FindFl| Grep |                    | S-H  | C-D  | C-U  | S-L  |      | Del  |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * | Esc  |      |LSPFmt|LSPAct|LSPRen| CPR  |-------.    ,-------|CwPane|CwPane|CwPane|CwPane|      | Ent  |
+     * | Esc  |SELWBK|LSPFmt|LSPAct|LSPRen| CPR  |-------.    ,-------|CwPane|CwPane|CwPane|CwPane|      | Ent  |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
      * |LShift|GitStg|GitBlm| viw  | diw  | Save |-------|    |-------|HrpMnu|HrpPrv|HrpNxt|HrpAdd|      |RShift|
      * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -272,8 +290,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [RAISE] = LAYOUT(
         KC_GRV,   MC_HARPOON_GOTO_1, MC_HARPOON_GOTO_2, MC_HARPOON_GOTO_3, MC_HARPOON_GOTO_4, MC_HARPOON_GOTO_5,                     _______,       _______,          _______,       _______,       _______,       OS_DEL_WORD_FWD,
-        KC_TAB,   MC_QUIT,           _______,           MC_SPLIT_HELPER,   MC_FIND_FILES,     MC_GREP_TEXT,                            LSFT(KC_H),    LCTL(KC_D),       LCTL(KC_U),    LSFT(KC_L),    _______,       KC_DEL,
-        KC_ESC,   _______,           MC_LSP_FORMAT,     MC_LSP_ACTION,     MC_LSP_RENAME,     MC_CPR,                                  MC_PANE_LEFT,  MC_PANE_DOWN,     MC_PANE_UP,    MC_PANE_RIGHT, _______,       KC_ENT,
+        KC_TAB,   MC_QUIT,           SELLINE,           MC_SPLIT_HELPER,   MC_FIND_FILES,     MC_GREP_TEXT,                            LSFT(KC_H),    LCTL(KC_D),       LCTL(KC_U),    LSFT(KC_L),    _______,       KC_DEL,
+        KC_ESC,   SELWBAK,           MC_LSP_FORMAT,     MC_LSP_ACTION,     MC_LSP_RENAME,     MC_CPR,                                  MC_PANE_LEFT,  MC_PANE_DOWN,     MC_PANE_UP,    MC_PANE_RIGHT, _______,       KC_ENT,
         KC_LSFT,  MC_GIT_STAGE,      MC_GIT_BLAME,      MC_SELECT_WORD,    MC_DELETE_WORD,    MC_SAVE,           _______,  _______,   MC_HARPOON_MENU, MC_HARPOON_PREV, MC_HARPOON_NEXT, MC_HARPOON_ADD, _______,    KC_RSFT,
                                 KC_LALT,  _______,           _______,           _______,           _______,  _______,   _______,       _______,          _______,       _______
     ),
@@ -386,13 +404,29 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 const uint32_t unicode_map[] PROGMEM = {};
 
 const custom_shift_key_t custom_shift_keys[] = {
+    {KC_DOT,  KC_QUES},   // Shift + . = ?
+    {KC_COMM, KC_EXLM},   // Shift + , = !
 };
 uint8_t NUM_CUSTOM_SHIFT_KEYS = sizeof(custom_shift_keys) / sizeof(*custom_shift_keys);
 
 const uint16_t caps_combo[] PROGMEM = {KC_C, KC_COMM, COMBO_END};
-combo_t        key_combos[]         = {
-    // C and , => activate Caps Word.
-    COMBO(caps_combo, CW_TOGG),
+const uint16_t k_h_combo[] PROGMEM = {KC_K, KC_H, COMBO_END};
+const uint16_t comm_dot_combo[] PROGMEM = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t w_f_combo[] PROGMEM = {KC_W, KC_F, COMBO_END};
+const uint16_t l_u_combo[] PROGMEM = {KC_L, KC_U, COMBO_END};
+const uint16_t x_c_combo[] PROGMEM = {KC_X, KC_C, COMBO_END};
+const uint16_t d_v_combo[] PROGMEM = {KC_D, KC_V, COMBO_END};
+const uint16_t t_n_combo[] PROGMEM = {HOME_T, HOME_N, COMBO_END};
+
+combo_t key_combos[] = {
+    COMBO(caps_combo, CW_TOGG),       // C + , => Caps Word (cross-hand)
+    COMBO(k_h_combo, KC_BSLS),        // K + H => backslash (right bottom, adjacent)
+    COMBO(comm_dot_combo, KC_SCLN),    // , + . => semicolon (right bottom, adjacent)
+    COMBO(w_f_combo, KC_ESC),          // W + F => Escape (left top, adjacent)
+    COMBO(l_u_combo, KC_TAB),          // L + U => Tab (right top, adjacent)
+    COMBO(x_c_combo, KC_UNDS),         // X + C => underscore (left bottom, adjacent)
+    COMBO(d_v_combo, KC_COLN),         // D + V => colon (left bottom, adjacent)
+    COMBO(t_n_combo, KC_ENT),          // T + N => Enter (cross-hand index fingers)
 };
 uint16_t COMBO_LEN = sizeof(key_combos) / sizeof(*key_combos);
 
@@ -418,6 +452,24 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
         default:
             return 0; // Otherwise, force hold and disable key repeating.
     }
+}
+
+uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t* record,
+                           uint16_t prev_keycode) {
+    if (get_tap_keycode(prev_keycode) <= KC_Z &&
+        (get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) == 0) {
+        switch (keycode) {
+            case HOME_A: case HOME_R: case HOME_I: case HOME_O:
+                return FLOW_TAP_TERM;      // 100ms for pinky/ring
+            case HOME_T: case HOME_N:
+                return FLOW_TAP_TERM - 25; // 75ms for index (ctrl)
+        }
+    }
+    return 0;
+}
+
+bool get_speculative_hold(uint16_t keycode, keyrecord_t* record) {
+    return true;
 }
 
 #ifdef AUTOCORRECT_ENABLE
@@ -449,6 +501,14 @@ bool caps_word_press_user(uint16_t keycode) {
         case M_MENT:
         case M_QUEN:
         case M_TMENT:
+        case M_FUNC:
+        case M_IMPORT:
+        case M_BREAK:
+        case M_VALUE:
+        case M_HANDLER:
+        case M_JECT:
+        case M_KEYWORD:
+        case M_XPORT:
             return true;
 
         default:
@@ -456,32 +516,34 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
-bool achordion_chord(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record, uint16_t other_keycode, keyrecord_t* other_record) {
-    // Exceptionally consider the following chords as holds, even though they
-    // are on the same hand in Magic Sturdy.
+// Chordal Hold layout: maps each key position to 'L' (left), 'R' (right),
+// or '*' (either hand). Used by QMK's Chordal Hold to determine opposite-hand
+// holds, replacing Achordion.
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
+  '*', '*', '*', '*', '*', '*',                        '*', '*', '*', '*', '*', '*',
+  '*', 'L', 'L', 'L', 'L', 'L',                       'R', 'R', 'R', 'R', 'R', '*',
+  '*', 'L', 'L', 'L', 'L', 'L',                       'R', 'R', 'R', 'R', 'R', '*',
+  '*', 'L', 'L', 'L', 'L', 'L', '*',             '*', 'R', 'R', 'R', 'R', 'R', '*',
+            'L', 'L', 'L', 'L', 'L',              'R', 'R', 'R', 'R', 'R'
+);
+
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
+                      uint16_t other_keycode, keyrecord_t* other_record) {
+    // Layer-tap keys always hold.
     switch (tap_hold_keycode) {
         case LR_LOWER:
-            return true;
         case LR_RAISE:
-            return true;
         case LR_MAIN:
-            return true;
         case LR_TMUX:
             return true;
     }
 
-    // Also allow same-hand holds when the other key is in the rows below the
-    // alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboard is split.
+    // Thumb row: allow same-hand holds.
     if (other_record->event.key.row % (MATRIX_ROWS / 2) >= 4) {
         return true;
     }
 
-    // Otherwise, follow the opposite hands rule.
-    return achordion_opposite_hands(tap_hold_record, other_record);
-}
-
-uint16_t achordion_timeout(uint16_t tap_hold_keycode) {
-    return 800; // Use a timeout of 800 ms.
+    return get_chordal_hold_default(tap_hold_record, other_record);
 }
 
 // clang-format off
@@ -514,6 +576,21 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
       case KC_U: return KC_E;         // U -> E
       case KC_Y: return KC_P;         // Y -> P
       case KC_SPC: return M_THE;      // spc -> THE
+
+      // Coding completions via magic key.
+      case KC_F: return M_FUNC;       // F * -> function
+      case KC_B: return M_BREAK;      // B * -> break
+      case HOME_I: return M_IMPORT;   // I * -> import
+      case KC_H: return M_HANDLER;    // H * -> handler
+      case KC_J: return M_JECT;       // J * -> ject
+      case KC_K: return M_KEYWORD;    // K * -> keyword
+      case KC_V: return M_VALUE;      // V * -> value
+      case KC_W: return M_WHILE;      // W * -> while
+      case KC_X: return M_XPORT;      // X * -> xport
+
+      // Select word direction toggle.
+      case SELWORD: return SELWBAK;
+      case SELWBAK: return SELWORD;
 
       case KC_DOT: return M_UPDIR;    // . -> ./
       case KC_COMM:                   // ! -> ==
@@ -599,15 +676,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   if (!process_socd_cleaner(keycode, record, &socd_h)) { return false; }
   // 2. Orbital Mouse
   if (!process_orbital_mouse(keycode, record)) { return false; }
-  // 3. Achordion
-  if (!process_achordion(keycode, record)) { return false; }
-  // 4. Sentence Case
+  // 3. Sentence Case
   if (!process_sentence_case(keycode, record)) { return false; }
-  // 5. Select Word
+  // 4. Select Word
   if (!process_select_word(keycode, record)) { return false; }
-  // 6. Custom Shift Keys
+  // 5. Custom Shift Keys
   if (!process_custom_shift_keys(keycode, record)) { return false; }
-  // 7. Mouse Turbo Click
+  // 6. Mouse Turbo Click
   if (!process_mouse_turbo_click(keycode, record, TURBO)) { return false; }
 
   const uint8_t mods = get_mods();
@@ -652,6 +727,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         else { unregister_code(KC_DEL); unregister_code(mod); }
         return false;
     }
+  }
+
+  // Select Line / Select Word Backward (need press + release handling).
+  switch (keycode) {
+    case SELLINE:
+      if (record->event.pressed) { select_word_register('L'); }
+      else { select_word_unregister(); }
+      return false;
+    case SELWBAK:
+      if (record->event.pressed) { select_word_register('B'); }
+      else { select_word_unregister(); }
+      return false;
   }
 
   if (record->event.pressed) {
@@ -722,6 +809,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 				case M_MKGRVS:
 					SEND_STRING_DELAY(/*`*/"``\n\n```" SS_TAP(X_UP), TAP_CODE_DELAY);
 					break;
+				// Coding completions via magic key.
+				case M_FUNC:    MAGIC_STRING(/*f*/"unction", KC_S); break;
+				case M_IMPORT:  MAGIC_STRING(/*i*/"mport", KC_S); break;
+				case M_BREAK:   MAGIC_STRING(/*b*/"reak", KC_S); break;
+				case M_WHILE:   SEND_STRING_DELAY(/*w*/"hile", TAP_CODE_DELAY); break;
+				case M_VALUE:   MAGIC_STRING(/*v*/"alue", KC_S); break;
+				case M_HANDLER: MAGIC_STRING(/*h*/"andler", KC_S); break;
+				case M_JECT:    MAGIC_STRING(/*j*/"ect", KC_S); break;
+				case M_KEYWORD: MAGIC_STRING(/*k*/"eyword", KC_S); break;
+				case M_XPORT:   MAGIC_STRING(/*x*/"port", KC_S); break;
 
         // Vim
         case MC_CPR:
@@ -1013,7 +1110,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 
 void housekeeping_task_user(void) {
-  achordion_task();
   select_word_task();
   sentence_case_task();
   orbital_mouse_task();
